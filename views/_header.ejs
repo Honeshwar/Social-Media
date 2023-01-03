@@ -1,28 +1,18 @@
-<header>
-    Page Header
 
-    <ul>
-        <% if (locals.user){ %>
-            <li>
-                <a href="/users/profile">
-                    <%= user.name %>
-                </a>
-            </li>
-            <li>
-                <a href="/users/sign-out">Sign Out</a>
-            </li>
-        <% }else{ %>
+<!-- //partials in views -->
+<link rel="stylesheet" href="./css/header.css">
+<!-- <header>Hey,header</header> -->
 
-            <li>
-                <a href="/users/sign-in">Sign In</a>
-            </li>
-
-            <li>
-                <a href="/users/sign-up">Sign Up</a>
-            </li>
-
-
-        <% } %>
-    </ul>
-
-</header>
+<nav>
+    <h2>CoDe Social</h2>
+    <div id="page-links">
+    <%if(locals.user){%>
+        <li><a href="/">Home</a></li>
+        <li><a href="/user/profile">Profile</a></li>
+        <li><a href="/user/signOut">Sign Out</a></li>
+    
+    <%}else{%>
+        <li><a href="/user/signUp">Sign Up</a></li>
+        <li><a href="/user/signIn">Sign In</a></li>
+    <%}%>
+</nav>

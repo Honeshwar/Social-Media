@@ -1,75 +1,92 @@
+//import passport and passport local strategy
 const passport = require('passport');
-
 const LocalStrategy = require('passport-local').Strategy;
+const User = require('../models/users');
 
-const User = require('../models/user');
-
-
-// authentication using passport
-passport.use(new LocalStrategy({
-        usernameField: 'email'
+//authentication using password(sign-in)
+//tell the passport to use strategy
+passport.use(new LocalStrategy(
+    {
+        usernameField:'email',//unique in sign in(email)//at the time of sign in no cookies there with any key if of ession as id
+        passReqToCallback:true
     },
-    function(email, password, done){
-        // find a user and establish the identity
-        User.findOne({email: email}, function(err, user)  {
-            if (err){
-                console.log('Error in finding user --> Passport');
-                return done(err);
+    function(req,email,password,done)//done callback function
+    {
+        //find user  in db and than match password from db
+        User.findOne({email:email},function(err,user){
+            if(err){
+                flash('error',err);
+                // console.log("error in passport will find user");
+                return done(err);}
+
+            if(!user || user.password != password){
+                req.flash('error','Invalid username/password')
+                // console.log("Invalid username/password");
+                return done(null,false);
             }
 
-            if (!user || user.password != password){
-                console.log('Invalid Username/Password');
-                return done(null, false);
-            }
-
-            return done(null, user);
-        });
+            return done(null,user);//may go passport k pass,it pass to serializer user callback fun .arg
+        }); 
     }
-
-
 ));
 
 
-// serializing the user to decide which key is to be kept in the cookies
-passport.serializeUser(function(user, done){
-    done(null, user.id);
+// 2. serialize//find out which property sent to cookie
+// pass value / property that have to set to cookie
+passport.serializeUser(function(user,done){
+     done(null,user.id);// value for cookie in done arg.
+    //  return done
 });
 
+// 3. deserializing
+//already session time given and check for that session id is valid or not
+// next req. come in check who sign in and make the req and feed page//like profile flaw to overcome , previous without passport.js
+passport.deserializeUser(function(id,done){
 
-
-// deserializing the user from the key in the cookies
-passport.deserializeUser(function(id, done){
-    User.findById(id, function(err, user){
+    User.findById(id,function(err,user){
+             
         if(err){
-            console.log('Error in finding user --> Passport');
+            req.flash('error',err);
+            // console.log("error in passport will find user");
             return done(err);
         }
 
-        return done(null, user);
-    });
-});
+        return done(null,user);
+    })
+})
 
 
-// check if the user is authenticated
-passport.checkAuthentication = function(req, res, next){
-    // if the user is signed in, then pass on the request to the next function(controller's action)
-    if (req.isAuthenticated()){
-        return next();
-    }
 
-    // if the user is not signed in
-    return res.redirect('/users/sign-in');
+// create two MW function  for check and set
+
+//check if user is authenticated or not
+passport.checkAuthentication = function(req,res,next){
+// if the user id sign in than pass on the req to the next func. (controller action --> we will use this fun. in router and between router url and controller)
+    if( req?.isAuthenticated()){
+       return next();
+    }//? check if undefined req ==>false
+
+// // if user is not sign in
+    return res.redirect('/user/signIn');
+    
+
 }
 
-passport.setAuthenticatedUser = function(req, res, next){
-    if (req.isAuthenticated()){
-        // req.user contains the current signed in user from the session cookie and we are just sending this to the locals for the views
+// // ser auth.user to views locals
+passport.setAuthenticatedUser = function(req,res,next)
+{
+    if(req && req.isAuthenticated()){
         res.locals.user = req.user;
+        // res.locals.user.title ="Profile";
     }
-
-    next();
+    return next();
 }
 
 
 
 module.exports = passport;
+
+
+//1. sign in authentication do and than pass value that have to set to cookie (serializeUser) and  check for which user req by checking session token in cookie (deserializeUser)
+
+

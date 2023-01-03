@@ -1,0 +1,24 @@
+* {
+  margin: 0; }
+
+nav {
+  display: flex;
+  background-color: blue;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  height: 50px; }
+  nav h2 {
+    margin-left: 5px; }
+  nav #page-links {
+    display: flex;
+    justify-content: space-between; }
+    nav #page-links li {
+      list-style: none;
+      margin-right: 20px;
+      font-weight: 800;
+      font-size: large;
+      letter-spacing: 1px; }
+      nav #page-links li a {
+        text-decoration: none;
+        color: white; }

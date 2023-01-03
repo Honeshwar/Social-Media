@@ -1,70 +1,105 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const app = express();
-const port = 8000;
-const expressLayouts = require('express-ejs-layouts');
-const db = require('./config/mongoose');
-
-app.use(express.urlencoded());
-
-app.use(cookieParser());
-// used for session cookie
-const session = require('express-session');
-const passport = require('passport');
-const passportLocal = require('./config/passport-local-strategy');
-const MongoStore = require('connect-mongo')(session);
-
-
-
-app.use(express.static('./assets'));
-
-app.use(expressLayouts);
-// extract style and scripts from sub pages into the layout
-app.set('layout extractStyles', true);
-app.set('layout extractScripts', true);
-
-
-
-
-// set up the view engine
-app.set('view engine', 'ejs');
-app.set('views', './views');
-
-// mongo store is used to store the session cookie in the db
-app.use(session({
-    name: 'codeial',
-    // TODO change the secret before deployment in production mode
-    secret: 'blahsomething',
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-        maxAge: (1000 * 60 * 100)
-    },
-    store: new MongoStore(
-        {
-            mongooseConnection: db,
-            autoRemove: 'disabled'
+    const express = require('express');
+    const app = express();
+    const port = 8000;
+    
+    //database 
+    const db = require("./config/mongoose");
         
+    // an parser to store req thing in body object 
+    app.use(express.urlencoded());
+    
+    //cookie-parser import  and use it // pass MW
+    const cookies = require('cookie-parser');
+    app.use(cookies());
+   
+    
+    // used for session cookie
+    //passport use for authentication and session use for set cookie session
+    const passport = require('passport');//library
+    const session = require('express-session');//encrypt provide by this library
+    const passportLocal = require('./config/passport-local-strategy');// auth.code
+    
+    //aet up connect mongo to store session in db(currently at restart server session expire(destroyed))
+    const MongoStoreSession = require('connect-mongo');
+    const MongoStore = MongoStoreSession( session);
+    const nodeSassMW = require('node-sass-middleware');
+    //connect flash
+    const flash = require('connect-flash');
+    const Flash_MW = require('./config/flash-middleware');
+
+    app.use(nodeSassMW({
+        src:'./assets/scss',
+        dest: './assets/css',
+        debug:'true',
+        outputStyle:'extends',
+        prefix:'/css'
+    }))
+
+//    const sass = require('node-sass');
+//     sass.render({
+//       file: "./assets/scss/header.scss",
+//       outputStyle: 'expanded',
+//     outFile: '/assets/css/header.css',
+//     sourceMap: true, // or an absolute or relative (to outFile) path
+    
+//     }, function(err, result) { if(err)console.log('err',err);/*...*/ console.log(result)});
+    
+    //layout
+    const expressLayouts = require('express-ejs-layouts');
+    app.use(express.static('./assets')); 
+    app.set("layout extractStyles",true);
+    app.set("layout extractScripts",true);
+    app.use(expressLayouts);//variable that having RequestHandler interface in it
+    
+    
+    
+ 
+    
+    //setting up the view engine
+    app.set('view engine','ejs')
+    app.set('views','./views')
+    
+    //add MW for session
+    app.use(session({
+        name:"user_token",
+        // TODO change the secret before deployment in production mode
+        secret:'ko',
+        saveUninitialized:false,
+        resave:false, 
+        cookie:{// max cookie session time
+            maxAge:(1000*60*100)//in ms
         },
-        function(err){
-            console.log(err ||  'connect-mongodb setup ok');
-        }
-    )
-}));
+        store:new MongoStore({
+            mongooseConnection:db,
+            autoRemove:'disabled'
+           },function(err){
+            console.log("************connect-mongo is connect and storing session cookie**********");
+           })
+        })
+    
+    );
 
-app.use(passport.initialize());
-app.use(passport.session());
+    // add MW for Passport 
+    app.use(passport.initialize()); 
+    app.use(passport.session());
+    app.use(passport.setAuthenticatedUser);
 
-app.use(passport.setAuthenticatedUser);
+    //always use flash , tell to express to use flash in express app
+    app.use(flash());
+    // console.log(flash,"***********",flash()());
+    app.use(Flash_MW.setFlash);
+    // console.log(Flash_MW);
 
-// use express router
-app.use('/', require('./routes'));
-
-
-app.listen(port, function(err){
-    if (err){
-        console.log(`Error in running the server: ${err}`);
+    //call middleware an layer 
+    app.use('/',require('./routes'));
+    
+    app.listen(port,(err)=>{
+        if(err){
+            console.log(`Error while running express server ${err}`)
+        return;
     }
+    return console.log(`Server is running on port : ${port}`)
+    });
+    
 
-    console.log(`Server is running on port: ${port}`);
-});
+    

@@ -1,0 +1,22 @@
+#home-container{
+    display:flex;
+    justify-content:space-between;
+    #feed-posts{
+        width:70%;
+        padding:10px;
+        fieldset{
+            width:70%;
+        } border-right:1px solid lightgray;
+    }
+
+    #user-friends{
+        width:28%;
+        padding:10px;//so it stay some far away from border
+        height:100%;
+        // border:1px solid lightgray;
+      
+        ul{
+            height:100%;
+        }
+    }
+}

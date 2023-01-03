@@ -1,7 +1,29 @@
-        <link rel="stylesheet" href="/css/user_profile.css">
-        <h1>
-            Codeial / Profile Page
-        </h1>
+<!-- <%if(locals.user){%>
 
-        <p><%= user.name %></p>
-        <p><%= user.email %></p>
+<%}else{%>
+    <h1>CODE SOCIAL /Profile</h1>
+<%}%> -->
+
+    
+
+        <h1>CODE SOCIAL /<%= title%> </h1>
+
+
+    <% if(locals.profile_user.id == user.id){%>
+        <!-- an update form/router -->
+        <form action="/user/update/<%= profile_user.id%>" method="post">
+            <input type="text" name="name" placeholder="Enter your name" value="<%=profile_user.name%>" required>
+            <input type="email" name="email" placeholder="Enter your email" value="<%=profile_user.email%>" required>
+            <button type="submit">Update</button>
+            </form>
+    <%}else{%>
+        <!-- only info shows -->
+        <!-- <hr> -->
+        <p>Name : <%= profile_user.name %></p>  
+        <p>Email: <%= profile_user.email %></p>  
+        <p>Password: <%= profile_user.password %></p>  
+        <p>Created At: <%= profile_user.createdAt %></p>  
+        <p>Updated At: <%= profile_user.updatedAt %></p>
+        <!-- <hr> -->
+    <%}%>    
+    

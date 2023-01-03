@@ -1,0 +1,19 @@
+
+<li>
+    <fieldset>
+
+        <legend>Comment </legend>
+            <p>
+                <% if(locals.user && locals.user.id == comment.user.id){%>
+                    <small>
+                        <a href="/comment/destroy/<%=comment.id%>">Destroy Comment</a>
+                    </small>
+                <%}%>
+
+                Comment on post : <%=comment.content%>
+            
+                <small>Author of Comment : <%=comment.user.name%></small>
+                <!-- post.user that create post and comment.user that user who do comment -->
+            </p>   
+    </fieldset>
+</li> 
