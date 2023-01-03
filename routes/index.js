@@ -32,19 +32,18 @@ const homeController = require('../controllers/home_controller')
 console.log(`Router is running : ${router}`)
 
 router.get('/',homeController.home);
-
+router.get('/profile',homeController.profile);
 // router.get('/profile',homeController.profile);
 
 //middle ware (layer) is create to so we can access outside routers
 router.use('/user',require('./user'));// /user/profile than it work (use())
 
 //here we require (import) an middleware function from user.js where we exports router that  router provide that MW function
-
 //that MW move request to further /user/profile
 
 
 router.get('/user',homeController.user);
 
-router.post('/signup',homeController.signup)
+// router.post('/signup',homeController.signup)
 
 module.exports = router;
