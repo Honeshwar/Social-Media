@@ -188,6 +188,6 @@ module.exports.create =async function(req,res){
    req.logout(function(err) {
       if (err) {  console.log(err)
     }});
-    req.flash('success','Successfully Sign Out');
+    req.flash('success',"Successfully Sign Out");
     return res.redirect("/user/signIn");
   }
