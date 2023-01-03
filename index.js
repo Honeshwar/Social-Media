@@ -1,75 +1,70 @@
-const express = require('express');// console.log(express);//Function: createApplication]{ // application: { 
-const app = express();//return an object tht having many functionality  all // console.log(app);
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const app = express();
 const port = 8000;
-
-//database
-const db = require("./config/mongoose");
-
 const expressLayouts = require('express-ejs-layouts');
-app.use(express.static('./assets')); // above MW of expressLayouts so layout will having its static file access before rendering {logical order if not do also work fine but its logical order to understand usage}
+const db = require('./config/mongoose');
 
-// 
-app.set("layout extractStyles",true);
-app.set("layout extractScripts",true);
-
-app.use(expressLayouts);//variable that having RequestHandler interface in it
-
-
-//cookie-parser import 
-const cookies = require('cookie-parser');
-// MW
-app.use(cookies());
-
-// an parser to store req thing in body object 
 app.use(express.urlencoded());
 
-//call middleware an layer 
-app.use('/',require('./routes'));
-
-
-//setting up the view engine
-app.set('view engine','ejs')
-app.set('views','./views')
-
-
-
-app.listen(port,(err)=>{
-    if(err){
-        console.log(`Error while running express server ${err}`)
-    return;
-}
-return console.log(`Server is running on port : ${port}`)
-})
-
-// to try what is main file
-// module.exports.a=function()
-// {const express = require('express');// console.log(express);//Function: createApplication]{ // application: { 
-// const app = express();//return an object tht having many functionality  all // console.log(app);
-// const port = 8000;
+app.use(cookieParser());
+// used for session cookie
+const session = require('express-session');
+const passport = require('passport');
+const passportLocal = require('./config/passport-local-strategy');
+const MongoStore = require('connect-mongo')(session);
 
 
 
-// // an parser to store req thing in body object 
-// app.use(express.urlencoded());
+app.use(express.static('./assets'));
 
-// //call middleware an layer 
-// app.use('/',require('./routes'));
-
-
-// //setting up the view engine
-// app.set('view engine','ejs')
-// app.set('views','./views')
+app.use(expressLayouts);
+// extract style and scripts from sub pages into the layout
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
 
 
 
-// app.listen(port,(err)=>{
-//     if(err){
-//         console.log(`Error while running express server ${err}`)
-//     return;
-// }
-// return console.log(`Server is running on port : ${port}`)
-// })
 
-// }
+// set up the view engine
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
+// mongo store is used to store the session cookie in the db
+app.use(session({
+    name: 'codeial',
+    // TODO change the secret before deployment in production mode
+    secret: 'blahsomething',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: (1000 * 60 * 100)
+    },
+    store: new MongoStore(
+        {
+            mongooseConnection: db,
+            autoRemove: 'disabled'
+        
+        },
+        function(err){
+            console.log(err ||  'connect-mongodb setup ok');
+        }
+    )
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(passport.setAuthenticatedUser);
+
+// use express router
+app.use('/', require('./routes'));
 
 
+app.listen(port, function(err){
+    if (err){
+        console.log(`Error in running the server: ${err}`);
+    }
+
+    console.log(`Server is running on port: ${port}`);
+});

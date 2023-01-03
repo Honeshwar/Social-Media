@@ -1,15 +1,7 @@
+        <link rel="stylesheet" href="/css/user_profile.css">
+        <h1>
+            Codeial / Profile Page
+        </h1>
 
-    <h1>CODE SOCIAL /<%= title%></h1>
-
-    <hr>
-
-    <p>Name : <%= user.name %></p>  <hr>
-    <p>Email: <%= user.email %></p>  <hr>
-    <p>Password: <%= user.password %></p>  <hr>
-    <p>Created At: <%= user.createdAt %></p>  <hr>
-    <p>Updated At: <%= user.updatedAt %></p>
-    <hr>
-
-    <form action="/user/signOut" method="post">
-    <button type="submit">Sign Out</button>
-    </form>
+        <p><%= user.name %></p>
+        <p><%= user.email %></p>
