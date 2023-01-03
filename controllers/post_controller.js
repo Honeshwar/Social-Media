@@ -8,7 +8,7 @@ module.exports.create = function(req,res){
     Posts.create({
         content:req.body.content,
         user: req.user.id  // when setAuthenticationUser happen   where passport create an key of user in req ,so req.user is an user data entire
-        },  function(err,postData){
+        },  function(err,posts){//collects of posts fetch anf retrieve
             if(err){
                 // console.log(err,'err');
                 // return;
@@ -16,14 +16,22 @@ module.exports.create = function(req,res){
                 return res.redirect('back');
 
             } 
-        
+            if(req.xhr){// ajax do xmlHttpReq
+                req.flash('success',"Successfully created post");// we create MW work,this req.flash set to locals
+                return res.status(200).json({//data go to ajax as res
+                    data:{
+                        posts:posts
+                    },
+                    message:"Post is created! "
+                })
+            }
+          
+    return res.redirect('back');
+
     });
     
     //  req.post_array = POST_ARRAY;
-    
-    req.flash('success',"Successfully created post");// we create MW work,this req.flash set to locals
-    return res.redirect('back');
-
+  
 }
 
 

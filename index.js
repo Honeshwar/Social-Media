@@ -46,7 +46,7 @@
     
     //layout
     const expressLayouts = require('express-ejs-layouts');
-    app.use(express.static('./assets')); 
+    app.use(express.static('./assets')); //relative path
     app.set("layout extractStyles",true);
     app.set("layout extractScripts",true);
     app.use(expressLayouts);//variable that having RequestHandler interface in it

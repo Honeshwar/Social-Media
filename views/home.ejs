@@ -8,7 +8,7 @@
         
         <!-- check -->
         <% if(locals.user){%>
-            <form action="/post/create" method="post">
+            <form action="/post/create" id="creating-new-post" method="post">
                 <legend>*** POST ***</legend>
                 <textarea name="content"  id="3" cols="30" rows="10" placeholder="Enter your content" required style="resize:vertical">  </textarea>
                 <button type="submit">Post</button>
@@ -41,3 +41,6 @@
         </ul>
     </section>
 </div>
+
+
+<script src="./js/home_posts.js"></script>
