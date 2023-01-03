@@ -2,6 +2,9 @@ const express = require('express');// console.log(express);//Function: createApp
 const app = express();//return an object tht having many functionality  all // console.log(app);
 const port = 8000;
 
+//database
+const db = require("./config/mongoose");
+
 const expressLayouts = require('express-ejs-layouts');
 app.use(express.static('./assets')); // above MW of expressLayouts so layout will having its static file access before rendering {logical order if not do also work fine but its logical order to understand usage}
 
@@ -10,6 +13,12 @@ app.set("layout extractStyles",true);
 app.set("layout extractScripts",true);
 
 app.use(expressLayouts);//variable that having RequestHandler interface in it
+
+
+//cookie-parser import 
+const cookies = require('cookie-parser');
+// MW
+app.use(cookies());
 
 // an parser to store req thing in body object 
 app.use(express.urlencoded());

@@ -2,6 +2,7 @@
 // action = function
 
 module.exports.home = function(req,res){
+    // console.log(req)
     return res.render('home',{title:'Home'});
     // RENDER FUN. CALL VIEW ENGINE AND FIND HOME AT VIEW FOLDER(WHOSE PATH WE SET(SPECIFY)) AND RENDER IT
 //  return res.end("<h1>Controller is up, using express, we are at home</h1>")
