@@ -10,6 +10,13 @@ router.get('/profile',userController.profile);
 
 router.get('/email',userController.email);
 
+// for signUp and signIn get request
+router.get("/signUp",userController.signUp);
+router.get("/signIn",userController.signIn);
+
+// for signUp and signIn post request
+router.post("/create",userController.create);
+router.post("/create-session",userController.create_session);
 
 
 module.exports = router;

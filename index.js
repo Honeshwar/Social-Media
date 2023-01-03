@@ -1,10 +1,7 @@
 const express = require('express');// console.log(express);//Function: createApplication]{ // application: { 
 const app = express();//return an object tht having many functionality  all // console.log(app);
 const port = 8000;
-// set up database
-const db = require("./config/mongoose");
 
-//setup layout
 const expressLayouts = require('express-ejs-layouts');
 app.use(express.static('./assets')); // above MW of expressLayouts so layout will having its static file access before rendering {logical order if not do also work fine but its logical order to understand usage}
 
