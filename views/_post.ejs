@@ -1,10 +1,10 @@
-<li style="list-style:none">  
+<li style="list-style:none" id="post-<%=post._id%>">  
     <fieldset>
         <legend>Post Details</legend>
                 <!-- for delete post and check for button show to whom user who create post -->
             <% if(locals.user && locals.user.id == post.user.id){%>
                     <small>
-                        <a href="/post/destroy/<%=post.id%>">Destroy Post</a>
+                        <a class="delete-post-button" href="/post/destroy/<%=post.id%>">Destroy Post</a>
                     </small>
             <%}%>
                      <!-- post = one post in posts model or collection -->
