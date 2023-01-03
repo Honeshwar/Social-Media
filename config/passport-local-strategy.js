@@ -15,7 +15,7 @@ passport.use(new LocalStrategy(
         //find user  in db and than match password from db
         User.findOne({email:email},function(err,user){
             if(err){
-                flash('error',err);
+                req.flash('error',err);
                 // console.log("error in passport will find user");
                 return done(err);}
 
