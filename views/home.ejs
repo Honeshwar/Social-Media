@@ -17,6 +17,7 @@
     
         <div id="posts-list-container">
             <ul>
+                <button id ="delete-all-post" value="<%=user._id %>" type="submit">Delete all Post that you have been created</button>
                 <%let a=1%>
                 
                 <% if(locals.user && locals.posts){

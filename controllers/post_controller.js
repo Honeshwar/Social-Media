@@ -50,15 +50,18 @@ module.exports.create = async function(req,res){
     
         if(req.xhr){// ajax do xmlHttpReq
             
-        req.flash('success',"Successfully created post");// we create MW work,this req.flash set to locals
             return res.status(200).json({//data go to ajax as res
                 data:{
                     post:postData
                 },
+                flashMessage:{
+                      'success':"Successfully created post"
+                },
                 message:"Post is created! "
             })
         }
-
+        
+        req.flash('success',"Successfully created post");// we create MW work,this req.flash set to locals
         return res.redirect('back');
    }catch(err){
     // console.log(err);
@@ -97,6 +100,18 @@ module.exports.destroy = async function (req,res){
 
         post.remove();
         await  Comments.deleteMany({post:post.id});
+
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    post_id : req.params.id,// so remove post(li element) from html page using js 
+                },
+                flashMessage:{
+                    'success':"Successfully deleted post and comments associated with it!"
+                },
+                message:'delete post'// message for ajax req
+            });
+        }
         req.flash('success',"Successfully deleted post and comments associated with it!");// we create MW work,this req.flash set to locals
         return res.redirect('back');
     
@@ -107,3 +122,6 @@ module.exports.destroy = async function (req,res){
     return res.redirect('back');
  }
 }
+
+
+//to 

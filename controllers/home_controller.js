@@ -91,7 +91,7 @@ module.exports.home = async function(req,res){
 try {
 
     //populate(field in post schema)
-   const posts = await Post.find({})
+   const posts = await Post.find({}).sort('-createdAt')//array func to sort 
    .populate("user")
    .populate({
        path:'comments',//field
