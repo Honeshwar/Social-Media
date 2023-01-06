@@ -9,4 +9,6 @@ router.post('/create',passport.checkAuthentication,PostController.create);//MW f
 router.get('/destroy/:id',passport.checkAuthentication,PostController.destroy);//MW for authentication and user new get that post page
 //:id means : ednote string params(normal params)
 
+router.get('/deleteAll',passport.checkAuthentication,PostController.deleteAll);
+
 module.exports = router; // router MW as an layer use ,so req come to this file to execute 

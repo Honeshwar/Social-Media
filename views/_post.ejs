@@ -17,10 +17,10 @@
               
             
 
-            <!-- Comments********** -->
+<!--******************* Comments ***************** -->
             <div class="post-comments">
                 <% if(locals.user){%>
-                    <form action="/comment/create" method="post">
+                    <form action="/comment/create" class="create-comment" method="post">
                         <input type="text" name="content" placeholder="Type here to add comment....." required>
                         <!-- for getting post_id in comment to populate for this post -->
                         <input type="hidden" name="post_id" value="<%=post._id%>">
@@ -30,8 +30,8 @@
             </div>
             
             <!-- no need for auth. to see post and comments -->
-            <div class="post-comments-list">
-                <ul>
+            <div id="post-comments-list">
+                <ul id="<%= post._id%>">
                     <%for(let comment of post.comments){%> 
                       <%- include('_comment',{comment:comment}) %>
                     <%}%>

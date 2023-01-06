@@ -36,9 +36,11 @@ module.exports.create = async function(req,res){
  try {
    // / check for post_id that pass at form hiddenly are valid or not (may possible any user by inspect developer tools change post._id) so for that not create comment in db
    const post = await Posts.findById(req.body.post_id);
+
+   let comment = null;
    if(post){
      //create comment
-      const comment = await Comments.create({
+       comment = await Comments.create({
           content:req.body.content,
           user:req.user._id,
           post:post._id//req.body.post_id
@@ -46,7 +48,17 @@ module.exports.create = async function(req,res){
        post.comments.push(comment);//mongobd provide func that push entire single comment to this post comment fields  that each instance of schema(post) will have in Posts model
        post.save();// it will save the comment in posts ,because initially comment stor in RAM when push
    }
-  
+   
+   if(req.xhr){//that means it is an ajax req
+    return res.status(200).json({
+      data:{
+        comment:comment
+      },
+      flashMessage:{
+        success:" comment created"
+      },message:"comment created successfully"
+    })
+   }
    req.flash('success',"Successfully created comments");// we create MW work,this req.flash set to locals
    return res.redirect('/');
 
@@ -98,6 +110,16 @@ module.exports.destroy = async function(req,res){
        comment.remove();
        await Posts.findByIdAndUpdate(postID, {$pull:{comments:req.params.id}});
         
+      }
+      if(req.xhr){
+        return res.status(200).json({
+          data:{
+            comment_id:req.params.id
+          },
+          flashMessage:{
+            success:" comment deleted"
+          },message:"successfully comment deleted"
+        })
       }
       
       req.flash('success',"Successfully deleted  comments!");// we create MW work,this req.flash set to locals

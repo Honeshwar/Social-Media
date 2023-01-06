@@ -124,4 +124,36 @@ module.exports.destroy = async function (req,res){
 }
 
 
-//to 
+//to delete all posts
+module.exports.deleteAll = async function (req,res){
+   
+    
+    try {
+       const posts = await Posts.deleteMany({});
+       
+   
+        //    post.remove();
+          
+            await  Comments.deleteMany({});
+          
+          
+   
+           if(req.xhr){
+               return res.status(200).json({
+                 
+                   flashMessage:{
+                       'success':"Successfully deleted all post and comments associated with it!"
+                   },
+                   message:'delete post'// message for ajax req
+               });
+           }
+           req.flash('success',"Successfully deleted post and comments associated with it!");// we create MW work,this req.flash set to locals
+           return res.redirect('back');
+       
+       
+    } catch (error) {
+       // console.log(error,'while destroying post in post controller');
+       req.flash('error',error);// we create MW work,this req.flash set to locals
+       return res.redirect('back');
+    }
+   }

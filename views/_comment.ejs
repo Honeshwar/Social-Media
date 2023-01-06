@@ -1,12 +1,12 @@
 
-<li>
+<li id="comment-<%=comment.id%>"> 
     <fieldset>
 
         <legend>Comment </legend>
             <p>
                 <% if(locals.user && locals.user.id == comment.user.id){%>
                     <small>
-                        <a href="/comment/destroy/<%=comment.id%>">Destroy Comment</a>
+                        <a class="delete-comment-btn" href="/comment/destroy/<%=comment.id%>">Destroy Comment</a>
                     </small>
                 <%}%>
 
