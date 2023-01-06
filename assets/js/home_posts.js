@@ -1,5 +1,7 @@
 // send data from form to server using ajax
+//block scope so overriding of variable not take place use this {}
 
+//**************** create add/delete to post **********************************
 {
     // save post  in db and create an post inside posts section in  DOM
      let createPost = function(){
@@ -14,19 +16,15 @@
                 url:"/post/create",//this req in browser
                 data:new_post.serialize(),// data in form convert in json form like that we do express.urlencoded()
                 success:function(resDataFromServer){
-                    // console.log(resDataFromServer);
-                    let newPost = newPostDom(resDataFromServer.data.post) ;
-
-                    // console.log(newPost,"new post********************")
+                   
+                    let newPost = newPostDom(resDataFromServer.data.post);
                     $('#posts-list-container > ul').prepend(newPost);
-                    
-                    noty(resDataFromServer.flashMessage);
-
-                    //pass that delete <a> link to delete post,when ever post created
-                //    deletePost($(' .delete-post-button', newPost));
-                    deletePost2();
+                    notification(resDataFromServer.flashMessage);
+                    //initialize listener on delete link to ajax create post in DOM also + again(firstly when script is interpret) to all DOM delete post link/btn 
+                    deletePost();
                    //initialize listener to create comment forms , when ever post created
                     createComment();
+
                 },
                 error:function(err){
                     console.log(err.responseText);
@@ -35,7 +33,6 @@
         })
      
     }
-
 
     //method to create a post in DOM
     let newPostDom = function(post){
@@ -87,27 +84,7 @@
     }
 
     // method to delete post from DOM
-    // let deletePost = function(deleteLink){
-    //     console.log(deleteLink,'link delete');
-    //     $(deleteLink).click(function(e){
-    //         e.preventDefault();
-
-    //         $.ajax({
-    //             method:'GET',
-    //             url:$(deleteLink).prop('href'),// give value present at href(unique due to post id pass at link)
-    //             success:function(deletePostData){
-    //                 console.log(deletePostData);
-    //                 $(`#post-${deletePostData.data.post_id}`).remove();
-    //                 noty(deletePostData.flashMessage);
-    //             },error:function(errorWHileDelete){
-    //                 console.log(errorWHileDelete.responseText);//err is an json formate get from server and so errorWHileDelete an json obj inside it error content present,that why responseText
-    //             }
-
-    //         })
-    //     })
-    // }
-
-    let deletePost2 = function(){
+    let deletePost = function(){
         // console.log(deleteLink);
         let delButtons = $('.delete-post-button');
         console.log(delButtons,"deletePost2");
@@ -123,7 +100,7 @@
                     success:function(deletePostData){
                         console.log(deletePostData);
                         $(`#post-${deletePostData.data.post_id}`).remove();
-                        noty(deletePostData.flashMessage);
+                      notification(deletePostData.flashMessage);
                     },error:function(errorWHileDelete){
                         console.log(errorWHileDelete.responseText);//err is an json formate get from server and so errorWHileDelete an json obj inside it error content present,that why responseText
                     }
@@ -135,63 +112,60 @@
     }
     
     
-    deletePost2();  
-    createPost();
+        deletePost();  
+        createPost();
     
 
 
 //**************** create add/delete to comment **********************************
   
-//block scope so overriding of variable not take place
-// console.log('hi post comment .js');
 
-//create comment and store using ajax in server db
-    let convertFormToJson = function(form){
-        let data = $(form)
-        .serialize();
-        return data;
-    }
+        //create comment and store using ajax in server db
+        let convertFormToJson = function(form){
+            let data = $(form)
+            .serialize();
+            return data;
+        }
 
-    let createComment = function(){
-        let commentForm = $('.create-comment');
-        console.log(commentForm);
-        
-        let size = commentForm.length;
-        console.log(size);     
-        for(let i=0;i<size;i++){
-             commentForm[i].addEventListener('submit',function(e){// create listener to all form
-                         e.preventDefault();   
-          
-              console.log( convertFormToJson( commentForm[i]));
-                  
-                         // do ajax req ,than go to comment controller to send back an res to ajax
-                $.ajax({
-                    method:'POST',
-                    url:'/comment/create',//complete router
-                    data:convertFormToJson( commentForm[i]),//convert to json formate
-                    success:function(jsonResData){//that we post to server data as res get
-                        console.log(jsonResData,"response****");
-                      let element =  addCommentToDOM(jsonResData);
-                        //i set an post id to comment list container id with id="post-comment-..."
-                        $ (`.post-comments-list > ul[id= "${jsonResData.data.comment.post}"]`).prepend(element);
+        //method to create a comment in DOM
+        let createComment = function(){
+            let commentForm = $('.create-comment');
+            console.log(commentForm);
+            
+            let size = commentForm.length;
+            console.log(size);     
+            for(let i=0;i<size;i++){
+                commentForm[i].addEventListener('submit',function(e){// create listener to all form
+                            e.preventDefault();   
+            
+                console.log( convertFormToJson( commentForm[i]));
+                    
+                            // do ajax req ,than go to comment controller to send back an res to ajax
+                    $.ajax({
+                        method:'POST',
+                        url:'/comment/create',//complete router
+                        data:convertFormToJson( commentForm[i]),//convert to json formate
+                        success:function(jsonResData){//that we post to server data as res get
 
-                        noty(jsonResData.flashMessage);
-                   
-                    //   console.log(,'kkkkk');
-                        // deleteComments($(' .delete-comment-btn',element));//inside element(PASS) this class,THAT ELEMENT GET SELECT AND JQUERY GIVE US OBJ OF IT
-                        deletecomment2();
-                    },error:function(jsonResError){
-                        console.log(jsonResError);
-                    }
-        
-        
+                            console.log(jsonResData,"response****");
+                            let element =  addCommentToDOM(jsonResData);
+                            //i set an post id to comment list container id with id="post-comment-..."
+                            $ (`.post-comments-list > ul[id= "${jsonResData.data.comment.post}"]`).prepend(element);
+                            notification(jsonResData.flashMessage);
+                            deleteComment();
+                            
+                        },error:function(jsonResError){
+                            console.log(jsonResError);
+                        }
+            
+            
+                    });
                 });
-            });
-        }        
-          
-    }
-//add comment to DOM
-    let addCommentToDOM = function(resDataComment){
+            }        
+            
+        }
+        //add comment to DOM
+        let addCommentToDOM = function(resDataComment){
         //an jquery obj create that is an element of html
         return $(`
         <li id="comment-${resDataComment.data.comment._id}">
@@ -212,67 +186,41 @@
                     </p>   
             </fieldset>
         </li> `)
-    }
+         }
 
-    
 
-    //** delete comment
-
-    // let deleteComments = function(selector){
-    //     console.log(selector,"selector*********");
-
-    //     let size = selector.length;
-    //     for(let i=0;i<size;i++){
-    //     selector[i].addEventListener('click',function(e){
-    //         e.preventDefault();
-
-    //         $.ajax({
-    //             method:"GET",
-    //             url:selector[i].getAttribute('href'),//plane js func
-    //             success:function(resJSONData){
-    //                 $(`#comment-${resJSONData.data.comment_id}`).remove();
-    //                 noty(resJSONData.flashMessage);
-    //             },error:function(resErrorData){
-    //                 console.log(resError.responseText);
-    //             }
-    //         })
-    //     });
-
-    //  }
-    // }
-
-    let deletecomment2 = function(){
-        // console.log(deleteLink);
-        let delButtons = $('.delete-comment-btn');
-        console.log(delButtons,"deletecomment2");
-    
-        let size = delButtons.length;
-        for(let i=0;i<size;i++){
-           delButtons[i].addEventListener('click',function(e){
-                e.preventDefault();
-                console.log("deletePost2");
-                $.ajax({
-                    method:'GET',
-                    url:delButtons[i].getAttribute('href'),// plane js func
-                    success:function(deleteCommentData){
-                        console.log(deleteCommentData);
-                        $(`#comment-${deleteCommentData.data.comment_id}`).remove();
-                        noty(deleteCommentData.flashMessage);
-                    },error:function(errorWHileDelete){
-                        console.log(errorWHileDelete.responseText);//err is an json formate get from server and so errorWHileDelete an json obj inside it error content present,that why responseText
-                    }
-    
+        let deleteComment = function(){
+            // console.log(deleteLink);
+            let delButtons = $('.delete-comment-btn');
+            console.log(delButtons,"deletecomment2");
+        
+            let size = delButtons.length;
+            for(let i=0;i<size;i++){
+            delButtons[i].addEventListener('click',function(e){
+                    e.preventDefault();
+                    console.log("deletePost2");
+                    $.ajax({
+                        method:'GET',
+                        url:delButtons[i].getAttribute('href'),// plane js func
+                        success:function(deleteCommentData){
+                            console.log(deleteCommentData);
+                            $(`#comment-${deleteCommentData.data.comment_id}`).remove();
+                        notification(deleteCommentData.flashMessage);
+                        },error:function(errorWHileDelete){
+                            console.log(errorWHileDelete.responseText);//err is an json formate get from server and so errorWHileDelete an json obj inside it error content present,that why responseText
+                        }
+        
+                    })
                 })
-            })
-    
+        
+            }
         }
-    }
-    deletecomment2(); 
+     
+        deleteComment(); 
 
 
-
-// due hoisting it go up
-    let noty = function(flashMessage){
+    // due hoisting it go up
+    let notification = function(flashMessage){
         new Noty({
             theme:'metroui',
             text:`${flashMessage.success}`,
@@ -282,9 +230,9 @@
         }).show();
     }
 
-// delete all posts
+
+    // delete all posts
     let deleteAll = $('#delete-all-post')
-    
     deleteAll.click(function(e){
         e.preventDefault();
         let id=  deleteAll.prop('value');
@@ -297,7 +245,7 @@
         success:function(res){
             console.log(res);
            
-            noty(res.flashMessage);
+          notification(res.flashMessage);
         },error:function(errorWHileDelete){
             console.log(errorWHileDelete.responseText);//err is an json formate get from server and so errorWHileDelete an json obj inside it error content present,that why responseText
         }
