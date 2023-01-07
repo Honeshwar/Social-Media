@@ -19,9 +19,9 @@
     const session = require('express-session');//encrypt provide by this library
     const passportLocal = require('./config/passport-local-strategy');// auth.code
     
-    //aet up connect mongo to store session in db(currently at restart server session expire(destroyed))
+    //set up connect mongo to store session in db(currently at restart server session expire(destroyed))
     const MongoStoreSession = require('connect-mongo');
-    const MongoStore = MongoStoreSession( session);
+    const MongoStore =  MongoStoreSession(session);
     const nodeSassMW = require('node-sass-middleware');
     //connect flash
     const flash = require('connect-flash');
@@ -46,7 +46,12 @@
     
     //layout
     const expressLayouts = require('express-ejs-layouts');
+
     app.use(express.static('./assets')); //relative path
+
+    //make the uploads path available to the browser
+    app.use('/uploads',express.static(__dirname + '/uploads'));//when need file from this directory/folder in ejs file to send browser so express app give that file to ejs and view engine sent to browser,tell express app to use static file here when need in html page(<img>)
+
     app.set("layout extractStyles",true);
     app.set("layout extractScripts",true);
     app.use(expressLayouts);//variable that having RequestHandler interface in it
@@ -69,7 +74,7 @@
         cookie:{// max cookie session time
             maxAge:(1000*60*100)//in ms
         },
-        store:new MongoStore({
+        store: new MongoStore({
             mongooseConnection:db,
             autoRemove:'disabled'
            },function(err){

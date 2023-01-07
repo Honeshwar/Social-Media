@@ -1,5 +1,5 @@
   const Users = require("../models/users");
-
+  const  path = require('path');
   // const cookieParser = require("cookie-parser");
   //an action create of an router
 
@@ -31,6 +31,7 @@
 
 
   //get reqs
+  
   module.exports.profile = function(req,res){
     Users.findById(req.params.id,function(err,user){
 
@@ -42,23 +43,67 @@
   }
 
   //update
-  module.exports.update = function(req,res){
-    //user valid or not(every user access of developer tool,so he can change id as input in html tags)
-    if(req.user.id == req.params.id){
-      Users.findByIdAndUpdate(req.params.id,req.body,function(error,user){
-        if(error){
-          req.flash('error',error);// we create MW work,this req.flash set to locals
+  // module.exports.update = function(req,res){
+  //   //user valid or not(every user access of developer tool,so he can change id as input in html tags)
+  //   if(req.user.id == req.params.id){
+  //     Users.findByIdAndUpdate(req.params.id,req.body,function(error,user){
+  //       if(error){
+  //         req.flash('error',error);// we create MW work,this req.flash set to locals
         
+  //       }
+  //       return res.redirect('back')
+  //     })
+  //   }else{
+  //     // return res.status(401).send('Unauthorized');
+  //     req.flash('error',"401 Unauthorized");// we create MW work,this req.flash set to locals
+  //     return res.redirect('back')
+  //   }
+  // }
+  
+  module.exports.update = async function(req,res){
+    
+    
+      //user valid or not(every user access of developer tool,so he can change id as input in html tags)
+      if(req.user.id == req.params.id){
+        try {
+          let user = await Users.findById(req.params.id);
+          //use uploaded avatar because multipart/form-data as req,req pass here
+          // an mw multer provide
+          // Users.static.uploadedAvatar
+          Users.uploadedAvatar(req,res,function(error){
+            if(error){console.log("multer error",error);}
+
+            console.log(req.file);
+            user.email = req.body.email;//ram upper store
+            user.name = req.body.name;
+
+            if(req.file){
+              user.avatarFilePath = Users.avatar_path + '/' + req.file.filename;//field fill path
+           //                 /uploads/users/avatar        /filename
+
+           //problem user as many time upload file multer save in disk storage,we need only store that img that user want his profile and delete previous
+          //  if(user.avatar){
+          //   fs
+          //  }
+
+            }
+
+            user.save();//it will save all save data from ram to db
+            return res.redirect('back')
+          });
+
+        } catch (error) {
+          console.log(error);
+          req.flash('error',"error while updating");// we create MW work,this req.flash set to locals
+          return res.redirect('back')
         }
-        return res.redirect('back')
-      })
-    }else{
-      // return res.status(401).send('Unauthorized');
+
+      }else{
+    
       req.flash('error',"401 Unauthorized");// we create MW work,this req.flash set to locals
       return res.redirect('back')
     }
   }
-  
   
   module.exports.email = function(req,res){
   return res.end("<h1>Email</h1>")
