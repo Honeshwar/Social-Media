@@ -18,6 +18,7 @@
     const passport = require('passport');//library
     const session = require('express-session');//encrypt provide by this library
     const passportLocal = require('./config/passport-local-strategy');// auth.code
+    const passportJWT = require('./config/passport-jwt-strategy');
     
     //set up connect mongo to store session in db(currently at restart server session expire(destroyed))
     const MongoStoreSession = require('connect-mongo');
