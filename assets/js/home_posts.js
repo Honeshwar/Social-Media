@@ -150,9 +150,9 @@
                             console.log(jsonResData,"response****");
                             let element =  addCommentToDOM(jsonResData);
                             //i set an post id to comment list container id with id="post-comment-..."
-                            $ (`.post-comments-list > ul[id= "${jsonResData.data.comment.post}"]`).prepend(element);
+                            $ (`.post-comments-list > ul[id= "${jsonResData.data.comment.post}"]`).prepend(element);//.post-comments-list  class because each post having ths container inside comments.So, i create it class
                             notification(jsonResData.flashMessage);
-                            deleteComment();
+                            deleteComment();//initialize listener
                             
                         },error:function(jsonResError){
                             console.log(jsonResError);
@@ -216,6 +216,7 @@
             }
         }
      
+        createComment(); // because i want listener on already exist html element m during page reload/render
         deleteComment(); 
 
 
