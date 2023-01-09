@@ -52,4 +52,9 @@ router.use('/post',require("./posts_router"));
 //for comment router
 router.use('/comment',require('./comments_router'))
 
+
+
+//use api
+router.use('/api',require('./api'));
+
 module.exports = router;
