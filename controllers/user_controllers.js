@@ -1,4 +1,5 @@
   const Users = require("../models/users");
+  const fs = require('fs');//file system manage directory ,add,delete,..name diff func
   const  path = require('path');
   // const cookieParser = require("cookie-parser");
   //an action create of an router
@@ -70,6 +71,7 @@
           //use uploaded avatar because multipart/form-data as req,req pass here
           // an mw multer provide
           // Users.static.uploadedAvatar
+          console.log(req.file);
           Users.uploadedAvatar(req,res,function(error){
             if(error){console.log("multer error",error);}
 
@@ -78,14 +80,18 @@
             user.name = req.body.name;
 
             if(req.file){
+              // console.log(user.avatarFilePath);
+              if(user.avatarFilePath){
+                fs.unlinkSync(path.join(__dirname,'..',user.avatarFilePath))//delete that already exist file from that local storage /uploads/users/avatar/filename-34569
+               }
+
+
+              //this is saving the path of the uploaded file into the avatar field in the user
               user.avatarFilePath = Users.avatar_path + '/' + req.file.filename;//field fill path
            //                 /uploads/users/avatar        /filename
 
            //problem user as many time upload file multer save in disk storage,we need only store that img that user want his profile and delete previous
-          //  if(user.avatar){
-          //   fs
-          //  }
-
+          
             }
 
             user.save();//it will save all save data from ram to db

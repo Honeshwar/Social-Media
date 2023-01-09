@@ -26,14 +26,14 @@
     //connect flash
     const flash = require('connect-flash');
     const Flash_MW = require('./config/flash-middleware');
-
+ 
     app.use(nodeSassMW({
-        src:'./assets/scss',
-        dest: './assets/css',
+        src:'/assets/scss',
+        dest: '/assets/css',
         debug:'true',
         outputStyle:'extends',
         prefix:'/css'
-    }))
+    }));// create an in assess for different  router ( just temporary we will find optimal way  )
 
 //    const sass = require('node-sass');
 //     sass.render({
@@ -48,6 +48,8 @@
     const expressLayouts = require('express-ejs-layouts');
 
     app.use(express.static('./assets')); //relative path
+    const path = require('path');
+    // app.use('./assets',express.static(path.join(__dirname, 'assets')));
 
     //make the uploads path available to the browser
     app.use('/uploads',express.static(__dirname + '/uploads'));//when need file from this directory/folder in ejs file to send browser so express app give that file to ejs and view engine sent to browser,tell express app to use static file here when need in html page(<img>)
