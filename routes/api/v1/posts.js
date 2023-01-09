@@ -1,5 +1,6 @@
 const express = require('express');
 const  router = express.Router()// MW provide
+const controllers = require('../../../controllers/api/v1/posts')
+router.get('/',controllers.index); 
 
-router.use('/posts',require('./posts')); // MW move to req to one file to another
 module.exports = router;
