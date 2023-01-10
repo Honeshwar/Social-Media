@@ -36,18 +36,22 @@ module.exports.destroy = async function (req,res){
     
     try {
        const post = await Post.findById(req.params.id);
-    //    if(req.user.id == post.user){//user only store id(f.k)
+       if(req.user.id == post.user){//user only store id(f.k)
    
            post.remove();
            await  Comments.deleteMany({post:post.id});
            return res.json({
             message:'Successfully deleted post'
            })
-        
+       }else{
+        return res.json(404,{
+            message:'you cannot delete this post'
+        })
+       }
     } catch (error) {
     
-       return res.json({
-        message:'error while deleting post'
+       return res.json(500,{
+        message:'Invalid Server Error'
        });
     }
    }
