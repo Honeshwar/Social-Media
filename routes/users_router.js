@@ -1,4 +1,5 @@
 const express = require('express');
+const { authenticate } = require('passport');
 const passport = require('passport');
 
 const router = express.Router();
@@ -32,4 +33,8 @@ router.post("/create-session",passport.authenticate(
 router.get("/signOut",userController.destroySession);
 
 
+//google auth for user
+router.get('/auth/google',passport.authenticate('google',{scope:['profile','email'],session:false}));//passport give this url to use popup window open req to google server and pass data that define scope to callback url
+router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'user/signIn'}),userController.create_session);//get data go to home url
+//don't forget to use that auth on main .jd file to load it 
 module.exports = router; 

@@ -1,10 +1,51 @@
-<!-- <link rel="stylesheet" type="text/css" href="./css/user_signIn.css"> -->
-<h1><%= title%></h1>
-<form action="/user/create-session" method="post">   <!-- session means time i am sig in  -->
+<link rel="stylesheet" type="text/css" href="./css/user_signIn.css">
 
-    <input type="email" name="email"  placeholder="Email" required >
-    <input type="password" name="password" placeholder="Password" required >
-    <button type="submit">Sign In</button>
+<style>
+   #s{
+        height: 80vh;
+        width: 100vw;
+        display: flex;
+        /* justify-content: center; */
+        align-items: center;
+   }
+    #div{
+        height: 80%;
+        width: 50%;
+        display: flex;
+        flex-flow: column nowrap;
+        background: linear-gradient(blue,white);
+        margin-left: 200px;
+        margin-top: 50px;
+        align-items: center;
+        box-shadow: 0 0 1rem .2rem black;
+        justify-content: space-evenly;
+    }
+    h1{
+        color: aliceblue;
+    }
+    #f{
+        height: 50%;
+        width: 50%;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-evenly;
+    }
+</style>
+
+<section id="s">
+    <div id="div">
+        <h1><%= title%></h1>
+        <form action="/user/create-session" id="f" method="post">   <!-- session means time i am sig in  -->
     
-
-</form>
+            <input type="email" name="email"  placeholder="Email" required >
+            <input type="password" name="password" placeholder="Password" required >
+            <button type="submit">Sign In</button>
+            
+    
+        </form>
+        <p>
+            <a href="/user/auth/google">Google Sign In / Sign Up</a>
+        </p>
+    
+    </div>
+</section>

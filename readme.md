@@ -65,3 +65,5 @@ add connect-mongo and write signOut code
 5 days ago
 
 
+
+<sometime when we install too many library than some library may cause an error while installing so install then separately and paste in project node_module folder and write on dependency m >

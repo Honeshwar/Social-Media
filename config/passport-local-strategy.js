@@ -25,7 +25,8 @@ passport.use(new LocalStrategy(
                 return done(null,false);
             }
 
-            return done(null,user);//may go passport k pass,it pass to serializer user callback fun .arg
+            return done(null,user);//pass user to req, set user to req.user(passport do)
+            //may go passport k pass,it pass to serializer user callback fun .arg
         }); 
     }
 ));
@@ -33,14 +34,20 @@ passport.use(new LocalStrategy(
 
 // 2. serialize//find out which property sent to cookie
 // pass value / property that have to set to cookie
+
+//create session cookie
+// strategy of google use by passport and when at google strategy done(null,user)  req.user and passport do serialize user when it get use
 passport.serializeUser(function(user,done){
-     done(null,user.id);// value for cookie in done arg.
+    console.log("user  at serializer",user);
+   return  done(null,user.id);// value for cookie in done arg.
     //  return done
 });
 
 // 3. deserializing
 //already session time given and check for that session id is valid or not
 // next req. come in check who sign in and make the req and feed page//like profile flaw to overcome , previous without passport.js
+
+//remove session cookie,logout
 passport.deserializeUser(function(id,done){
 
     User.findById(id,function(err,user){
