@@ -15,6 +15,8 @@ module.exports.index = async function(req,res){
            }
         });
         
+        // response send to front end framework(but now use postman for it as FE framework) and it use this single json obj and fill in page
+        //directly an url // localhost:8000/api/v1/posts enter in browser i can see all content json obj return as response
         return res.status(200).json({  // res/json(status,obj) are deprecated instead of this use that we use
             messages:"list of items of all users",
             posts:posts//collection/array

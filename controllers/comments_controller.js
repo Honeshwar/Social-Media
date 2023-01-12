@@ -1,6 +1,7 @@
 const Posts = require('../models/posts');
 const Comments= require('../models/comments');
 const commentMailer = require('../mailer/comment_mailer');
+const queue = require('../config/kue');
 
 // module.exports.create = function(req,res){
 //     // / check for post_id that pass at form hiddenly are valid or not (may possible any user by inspect developer tools change post._id) so for that not create comment in db
@@ -51,8 +52,17 @@ module.exports.create = async function(req,res){
       
        //populate comment user or fine iat email and pass in comment_mailer createComment func
         commentPopulate = await comment.populate('user','name email');//name email pass so password no fetch from db(not give to anyone pass)//.execPopulate();
-      //  console.log(commentPopulate,'create comment');
-         commentMailer.newComment(commentPopulate);
+      // //  console.log(commentPopulate,'create comment');
+      //    commentMailer.newComment(commentPopulate);
+
+      // 
+       let job = queue.create('emails',commentPopulate).save(function(err){//create emails queue and send comment to queue.if emails queue exist just send comment to this queue. 
+        //.save so to save queue in db redis
+        if(err){console.log('error while sending job to queue');return;}
+
+        console.log('job id',job.id);
+       })
+
 
        if(req.xhr){//that means it is an ajax req
         return res.status(200).json({
