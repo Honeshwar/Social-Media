@@ -12,7 +12,7 @@
     const cookies = require('cookie-parser');
     app.use(cookies());
    
-    
+    // const nodeMailer = require('./config/nodeMailer');
     // used for session cookie
     //passport use for authentication and session use for set cookie session
     const passport = require('passport');//library

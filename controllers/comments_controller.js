@@ -1,5 +1,6 @@
 const Posts = require('../models/posts');
 const Comments= require('../models/comments');
+const commentMailer = require('../mailer/comment_mailer');
 
 // module.exports.create = function(req,res){
 //     // / check for post_id that pass at form hiddenly are valid or not (may possible any user by inspect developer tools change post._id) so for that not create comment in db
@@ -40,27 +41,33 @@ module.exports.create = async function(req,res){
    let comment = null;
    if(post){
      //create comment
-       comment = await Comments.create({
+      let comment = await Comments.create({
           content:req.body.content,
           user:req.user._id,
           post:post._id//req.body.post_id
        })
        post.comments.push(comment);//mongobd provide func that push entire single comment to this post comment fields  that each instance of schema(post) will have in Posts model
        post.save();// it will save the comment in posts ,because initially comment stor in RAM when push
+      
+       //populate comment user or fine iat email and pass in comment_mailer createComment func
+        commentPopulate = await comment.populate('user','name email');//name email pass so password no fetch from db(not give to anyone pass)//.execPopulate();
+      //  console.log(commentPopulate,'create comment');
+         commentMailer.newComment(commentPopulate);
+
+       if(req.xhr){//that means it is an ajax req
+        return res.status(200).json({
+          data:{
+            comment:comment
+          },
+          flashMessage:{
+            success:" comment created"
+          },message:"comment created successfully"
+        })
+       }
+       req.flash('success',"Successfully created comments");// we create MW work,this req.flash set to locals
+       return res.redirect('/');
    }
-   
-   if(req.xhr){//that means it is an ajax req
-    return res.status(200).json({
-      data:{
-        comment:comment
-      },
-      flashMessage:{
-        success:" comment created"
-      },message:"comment created successfully"
-    })
-   }
-   req.flash('success',"Successfully created comments");// we create MW work,this req.flash set to locals
-   return res.redirect('/');
+
 
 
  } catch (error) {
