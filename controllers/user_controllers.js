@@ -1,6 +1,9 @@
   const Users = require("../models/users");
   const fs = require('fs');//file system manage directory ,add,delete,..name diff func
   const  path = require('path');
+
+  const  reset_password = require('../models/reset_password');
+const User = require("../models/users");
   // const cookieParser = require("cookie-parser");
   //an action create of an router
 
