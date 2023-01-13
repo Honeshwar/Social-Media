@@ -57,4 +57,8 @@ router.use('/comment',require('./comments_router'))
 //use api
 router.use('/api',require('./api'));
 
+
+//use this router for liking 
+router.use("/likes",require('./likes'));
+
 module.exports = router;
