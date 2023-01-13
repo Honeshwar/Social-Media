@@ -16,6 +16,14 @@ const postSchema = new mongoose.Schema({
         ref:'Comments'//post comments field refer(relate) to Comments Model
     }
 
+    ],
+    // at same time when display post we have to display likes o post also//so for faster retrieval we use array here//we can do directly retrieve from db but that make our site little slow
+    likes:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            required:true,
+            ref:'Likes'
+        }
     ]
 },{timestamps:true})// create and update date and time tell us in db stored
 

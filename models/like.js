@@ -16,7 +16,7 @@ const likeSchema  = new mongoose.Schema({
         //dynamic reference ,it refer to another field that dynamically refer to two model (posts,comments)
     },
     onModel:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:String,// store type = post/comment
         required:true,
         enum:['Posts','Comments']// not use this that all model  dynamic refer//but chose among two
     }
@@ -26,4 +26,6 @@ const Likes = mongoose.model('Likes',likeSchema);
 
 module.exports = Likes;
 
-//i have to store two thing first like object id(byn) and second type(posts,comments) of liked object,on which like happen
+// url likes/toggle/?id=dnjsk&type=post/comment
+//i have to store two thing first like object id(posts/comments,req pass) and second type(posts,comments) of liked object,on which like happen
+//dynamic reference means that we are setting reference in any "other(different) field" (from bunch of references choose) and we use it in our field
