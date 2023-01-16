@@ -1,6 +1,9 @@
 <link rel="stylesheet" href="./css/home.css">
 <!-- div use to make a flex container and align section properly -->
 <div id="home-container">
+    <section id="welcome">
+        <h4>Welcome to code social</h4>
+    </section>
     <section id="feed-posts">
         <!-- <h1>CODE SOCIAL /<%= title%></h1> -->
         <!-- <hr> -->
@@ -29,9 +32,13 @@
         </div>
     </section>
     
-    <section id="user-friends">
-        
-        <h4>Profile links section</h4>
+    <section id="friends-and-users">
+       <div id="friends">
+        <h4>Friends</h4>
+       
+       </div>
+       <div id="users">
+        <h4>Users</h4>
         <ul>
             <%  for(u of all_users){%>
                 <li>
@@ -39,6 +46,9 @@
                 </li>
             <%}%>
         </ul>
+       </div>
+       
+       
     </section>
 </div>
 

@@ -24,7 +24,13 @@ const userSchema = new mongoose.Schema({
     },
     avatarFilePath:{//avatar file location store here as string
         type:String
-    }
+    },
+    friends:[{
+       
+                type:mongoose.Schema.Types.ObjectId,
+                ref:'friends',
+        
+    }]
 },{timestamps:true});
 
 

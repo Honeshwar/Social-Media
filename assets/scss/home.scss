@@ -1,22 +1,34 @@
 #home-container{
+    width:100vw;
+    height:100vh;
     display:flex;
     justify-content:space-between;
+
+    #welcome{
+        width:30%;
+        // padding:10px;
+          border:1px solid rgb(14, 11, 11);
+    }
     #feed-posts{
-        width:70%;
+        width:58%;
         padding:10px;
+        border:1px solid rgb(14, 11, 11);
         fieldset{
             width:70%;
-        } border-right:1px solid lightgray;
+        } 
+      
+        // border-left:1px solid lightgray;
     }
 
-    #user-friends{
-        width:28%;
-        padding:10px;//so it stay some far away from border
+    #friends-and-users{
+        border:1px solid rgb(14, 11, 11);
+        width:30%;
         height:100%;
+        padding:10px;//so it stay some far away from border
         // border:1px solid lightgray;
-      
-        ul{
-            height:100%;
-        }
+
+        display:flex;
+        flex-direction: column;
+       
     }
 }
