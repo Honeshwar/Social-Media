@@ -10,6 +10,8 @@
 
 
     <% if(locals.profile_user.id == user.id){%>
+        <!-- when user see its own profile -->
+
          <!-- path = /uploads/users/avatar/filename multer store where that file that path -->
        <img src="<%= profile_user.avatarFilePath%>"    
          alt="<%= profile_user.name%>">
@@ -21,13 +23,23 @@
             <button type="submit">Update</button>
             </form>
     <%}else{%>
-        <!-- only info shows -->
-        <!-- <hr> -->
-        <p>Name : <%= profile_user.name %></p>  
-        <p>Email: <%= profile_user.email %></p>  
-        <p>Password: <%= profile_user.password %></p>  
-        <p>Created At: <%= profile_user.createdAt %></p>  
-        <p>Updated At: <%= profile_user.updatedAt %></p>
-        <!-- <hr> -->
+        <!--this one for user to see other user profile,only info shows -->
+        <img src="<%= profile_user.avatarFilePath%>"    
+        alt="<%= profile_user.name%>">
+        <div id="user-details">
+            <p>Name : <%= profile_user.name %></p>  
+            <p>Email: <%= profile_user.email %></p>  
+            <!-- <p>Password: <%= profile_user.password %></p>   -->
+            <p>Created At: <i><%= profile_user.createdAt %></i> </p>  
+            <p>Updated At: <%= profile_user.updatedAt %></p>
+        
+        </div>
+        <div id="add-friend">
+            <form action="/profile/addFriend" method="post">
+                <input type="hidden" name="friendID" value="<%=profile_user.id%>">
+                <button type="submit">Add To Friend</button>
+            </form>
+        </div>
+
     <%}%>    
     
