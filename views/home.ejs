@@ -18,12 +18,11 @@
         <div id="posts-list-container">
             <button id ="delete-all-post" value="<%=user._id %>" type="submit">Delete all Post that you have been created</button>
             <ul>
-                <%let a=1%>
-                
+         
                 <% if(locals.user && locals.posts){
                     for(let post of posts){%> 
     
-                        <%- include('_post',{post:post,a:a}) -%>
+                        <%- include('_post',{post:post}) -%>
     
                  <%}}%>
             </ul>
@@ -45,4 +44,6 @@
 
 
 <script src="./js/home_posts.js"></script>
-<script src="./js/post_comments.js"></script>
+<!-- <script src="./js/home_post_comments.js"></script>
+<script src="./js/notification"></script>
+<script src="./js/likes.js"></script> -->

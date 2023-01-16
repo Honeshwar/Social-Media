@@ -2,7 +2,7 @@
   const fs = require('fs');//file system manage directory ,add,delete,..name diff func
   const  path = require('path');
 
-  const  reset_password = require('../models/reset_password');
+  // const  reset_password = require('../models/reset_password');
 const User = require("../models/users");
   // const cookieParser = require("cookie-parser");
   //an action create of an router
@@ -41,7 +41,7 @@ const User = require("../models/users");
 
       return res.render("user_profile",{
         title:"Profile",
-        profile_user:user
+        profile_user:user 
       });
     })
   }

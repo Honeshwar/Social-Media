@@ -24,6 +24,7 @@
                     deletePost();
                    //initialize listener to create comment forms , when ever post created
                     createComment();
+                    createLike();
 
                 },
                 error:function(err){
@@ -47,6 +48,12 @@
                             <a class="delete-post-button" href="/post/destroy/${post._id}">Destroy Post</a>
                         </small>
             
+                        <small>
+                                    <form action="/likes/toggle/?id=${post._id}&type=post" method="post"  class="likes">
+                                       <button type="submit"><small class="counts">0 </small> <i class="fas fa-thumbs-up"></i></button>
+                                    </form> 
+                        </small>
+
                         <!-- post = one post in posts model or collection -->
                         <!-- content in post and name of author -->
                 <p>
@@ -148,11 +155,13 @@
                         success:function(jsonResData){//that we post to server data as res get
 
                             console.log(jsonResData,"response****");
-                            let element =  addCommentToDOM(jsonResData);
+                            element =  addCommentToDOM(jsonResData.data.comment);
                             //i set an post id to comment list container id with id="post-comment-..."
                             $ (`.post-comments-list > ul[id= "${jsonResData.data.comment.post}"]`).prepend(element);//.post-comments-list  class because each post having ths container inside comments.So, i create it class
                             notification(jsonResData.flashMessage);
                             deleteComment();//initialize listener
+                            createLike();
+
                             
                         },error:function(jsonResError){
                             console.log(jsonResError);
@@ -165,23 +174,30 @@
             
         }
         //add comment to DOM
-        let addCommentToDOM = function(resDataComment){
-        //an jquery obj create that is an element of html
+        let addCommentToDOM = function(comment){
+        //an jquery obj create that is alikeForm[i]ement of html
         return $(`
-        <li id="comment-${resDataComment.data.comment._id}">
+        <li id="comment-${comment._id}">
             <fieldset>
         
                 <legend>Comment </legend>
                     <p>
                        
                             <small>
-                                <a class="delete-comment-btn" href="/comment/destroy/${resDataComment.data.comment._id}">Destroy Comment</a>
+                                <a class="delete-comment-btn" href="/comment/destroy/${comment._id}">Destroy Comment</a>
                             </small>
                       
+                           
+                              
+                            <small>
+                                <form action="/likes/toggle/?id=${comment._id}&type=comment" method="post"  class="likes">
+                                <button type="submit"><small class="counts">0</small> <i class="fas fa-thumbs-up"></i></button>
+                                </form> 
+                            </small>
         
-                        Comment on post : ${resDataComment.data.comment.content}
+                        Comment on post : ${comment.content}
                     
-                        <small>Author of Comment : ${resDataComment.data.comment.user.name}</small>
+                        <small>Author of Comment : ${comment.user.name}</small>
                         <!-- post.user that create post and comment.user that user who do comment -->
                     </p>   
             </fieldset>
@@ -257,4 +273,49 @@
        }
     });
 
+
+
+    // ajax req to for likes
+
+    let createLike = function(){
+
+        let likeForm = $('.likes');
+        let count = $('.likes button small');
+        let btn = $('.likes button');
+        console.log (count)
+    
+        
+        for(let i=0;i<likeForm.length;i++){
+    
+            likeForm[i].addEventListener("submit",function(e){
+                e.preventDefault();
+    
+                $.ajax({
+                    method:"POST",
+                    url: likeForm[i].getAttribute('action'),
+                    success:function(resDataJson){
+                        console.log (likeForm[i])
+                        //display on DOM
+                        if(resDataJson.data.deleted){
+                            a= `${resDataJson.data.postLikes.likes.length} `;//array length
+                            btn[i].style.backgroundColor="lightgray";
+                             return count[i].innerText=a;
+                        }else{
+                           a= `${resDataJson.data.postLikes.likes.length} `;
+                           btn[i].style.backgroundColor="lightblue";
+                            return count[i].innerText=a;
+            
+                        }
+                        
+                    },error:function(resErrorJson){
+                        return console.log(resErrorJson.responseText);
+                    }
+                }) 
+            })
+        } 
+       
+    
+        }
+        createLike();
+    
 }

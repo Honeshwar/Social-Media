@@ -1,11 +1,12 @@
-//import three thing like , post , comment model because create like , push in post ,comment array
+//import three thing newL, post , comment model because create like , push in post ,comment array
 const Likes = require('../models/likes');
 const Posts = require('../models/posts');
 const Comments = require('../models/comments');
 
+//if like already exist than remove it and if not exist that crate new like
 module.exports.toggleLike = async function(req,res){//use async,await for good clean and understandable code and avoid call back hell
 
-    try {
+    try {console.log(req.query.id);
         // url likes/toggle/?id=dnjsk&type=post/comment
         // id= obj id of that liked object(post/comment) , type = string = comment/post
         let likeable;
@@ -45,12 +46,12 @@ module.exports.toggleLike = async function(req,res){//use async,await for good c
         deleted=true;//
     }else{
         //not exist than create new like document and also push to post/comment  array
-        let like = await Likes.create({
+        let newLike = await Likes.create({
             user:req.user._id,//auth time pass to req by passport
             likeable:req.query.id,//id of post/comment
             onModel:req.query.type
         });
-        likeable.likes.push(like);
+        likeable.likes.push(newLike._id);
         likeable.save();
     }
 
@@ -59,7 +60,8 @@ module.exports.toggleLike = async function(req,res){//use async,await for good c
         return res.status(200).json({
             message:"request successfully",
             data:{
-                deleted:deleted
+                deleted:deleted,
+                postLikes:likeable
             }
         })
     }
@@ -73,6 +75,7 @@ module.exports.toggleLike = async function(req,res){//use async,await for good c
 
 
     } catch (error) {
+        console.log(error);
         return res.json(500,{
             message:"Internal Server Error"
         });

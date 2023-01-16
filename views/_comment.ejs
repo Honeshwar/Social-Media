@@ -10,6 +10,16 @@
                     </small>
                 <%}%>
 
+                <% if(locals.user){%>
+                    <small>
+                        <form action="/likes/toggle/?id=<%=comment._id%>&type=comment" method="post"  class="likes">
+                           <button type="submit"><small class="counts"><%= comment.likes.length%></small> <i class="fas fa-thumbs-up"></i></button>
+                        </form> 
+                     </small>
+                <%}else{%>
+                   <small ><%= comment.likes.length%></small> <i class="fas fa-thumbs-up"></i>
+                       
+                <%}%>
                 Comment on post : <%=comment.content%>
             
                 <small>Author of Comment : <%=comment.user.name%></small>

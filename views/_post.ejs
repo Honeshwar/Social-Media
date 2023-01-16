@@ -7,10 +7,21 @@
                         <a class="delete-post-button" href="/post/destroy/<%=post.id%>">Destroy Post</a>
                     </small>
             <%}%>
+
+                <% if(locals.user){%>
+                    <small>
+                        <form action="/likes/toggle/?id=<%=post._id%>&type=post" method="post"  class="likes">
+                           <button type="submit"><small class="counts"><%= post.likes.length%></small> <i class="fas fa-thumbs-up"></i></button>
+                        </form> 
+                     </small>
+                <%}else{%>
+                   <small ><%= post.likes.length%></small> <i class="fas fa-thumbs-up"></i>
+                       
+                <%}%>
                      <!-- post = one post in posts model or collection -->
-                     <!-- content in post and name of author -->
-            <p>
-                Content <%=a++%>: <%=post.content %>
+                     <!-- content in post and name of author --> 
+            <p> 
+                Content : <%=post.content %>
                 <br>
                 <small>Name : <%=locals.post.user.name %></small>
             </p>

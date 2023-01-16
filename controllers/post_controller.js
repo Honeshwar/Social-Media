@@ -1,7 +1,7 @@
 //import Post collection/model to create any document inside it
 const Posts = require('../models/posts');
 const Comments = require('../models/comments');
-
+const Likes = require('../models/likes');
 // module.exports.create = function(req,res){
 
 // // console.log(req);
@@ -98,9 +98,15 @@ module.exports.destroy = async function (req,res){
     const post = await Posts.findById(req.params.id);
     if(req.user.id == post.user){//user only store id(f.k)
 
-        post.remove();
+         //delete post associated likes for the post and all its comments likes too
+         await Likes.deleteMany({likeable:post._id,onModel:'post'});
+         await Likes.deleteMany({_id:{$in:post.comment}})
+
+
+        post.remove();//remove from db
         await  Comments.deleteMany({post:post.id});
 
+       
         if(req.xhr){
             return res.status(200).json({
                 data:{
@@ -129,7 +135,14 @@ module.exports.deleteAll = async function (req,res){
    
     
     try {
-       const posts = await Posts.deleteMany({});
+         //delete all post associated likes for the post and all its comments likes too
+         // only like remove from likes model/collection
+        //  await Like.deleteMany({onModel:'post'});
+        //  await Like.deleteMany({onModel:'comment'});
+
+            await Likes.deleteMany({});//all likes remove
+
+            await Posts.deleteMany({});
        
    
         //    post.remove();
@@ -152,7 +165,7 @@ module.exports.deleteAll = async function (req,res){
        
        
     } catch (error) {
-       // console.log(error,'while destroying post in post controller');
+       console.log(error,'while destroying post in post controller');
        req.flash('error',error);// we create MW work,this req.flash set to locals
        return res.redirect('back');
     }

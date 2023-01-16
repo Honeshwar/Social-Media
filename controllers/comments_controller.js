@@ -2,7 +2,7 @@ const Posts = require('../models/posts');
 const Comments= require('../models/comments');
 const commentMailer = require('../mailer/comment_mailer');
 const queue = require('../config/kue');
-
+const Likes = require('../models/likes');
 // module.exports.create = function(req,res){
 //     // / check for post_id that pass at form hiddenly are valid or not (may possible any user by inspect developer tools change post._id) so for that not create comment in db
     
@@ -123,6 +123,10 @@ module.exports.destroy = async function(req,res){
 
   if(comment.user == req.user.id || req.user.id == post.user)
       {
+
+       // destroy the associated likes for this comment
+       await Likes.deleteMany({likeable: comment._id, onModel: 'Comment'});
+
        const postID=comment.post;
        comment.remove();
        await Posts.findByIdAndUpdate(postID, {$pull:{comments:req.params.id}});

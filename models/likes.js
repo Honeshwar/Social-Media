@@ -18,7 +18,7 @@ const likeSchema  = new mongoose.Schema({
     onModel:{
         type:String,// store type = post/comment
         required:true,
-        enum:['Posts','Comments']// not use this that all model  dynamic refer//but chose among two
+        enum:['post','comment']// not use this that all model  dynamic refer//but chose among two
     }
 },{timestamps:true});//create at and update at date/time 
 
