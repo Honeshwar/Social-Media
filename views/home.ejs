@@ -36,7 +36,23 @@
        <div id="friends">
         <h4>Friends</h4>
         <ul>
-            <%  for(fr of user_friends[0].friends){%>
+            <%  for(fr of user_friends.friends){%>
+                <!--collection(array) inside an single array ,   find() use collection(array ) return inside it all data that we need
+                [ //inside single obj=current user,that why [0]
+                    { 
+                        name:'hon',
+                        friends:[{},{}]
+                    } 
+                ]
+            -->
+            <!-- or
+            findOne an Obj so no need to do [0]
+             { 
+                name:'hon',
+                friends:[{},{}]
+             } 
+         -->
+
                 <li>
                     <a href="/user/profile/<%=fr.to_user.id%>"><%=fr.to_user.name%></a>
                 </li>

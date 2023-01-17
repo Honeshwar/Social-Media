@@ -103,7 +103,7 @@ try {
 
 
     const users = await Users.find({});
-    const user_friends = await Users.find(req.user._id).populate({//find always return an array
+    const user_friends = await Users.findOne(req.user._id).populate({//find always return an array
         path:'friends',//field
         populate:{ //nested populate
             path:'to_user' //inside array an comment obj field(content,""user"",post)
