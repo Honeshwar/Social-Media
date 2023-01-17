@@ -13,8 +13,10 @@
         <!-- when user see its own profile -->
 
          <!-- path = /uploads/users/avatar/filename multer store where that file that path -->
-       <img src="<%= profile_user.avatarFilePath%>"    
-         alt="<%= profile_user.name%>">
+       <img src="<%= profile_user.avatarFilePath%>"   
+         alt="<%= profile_user.name%>">   <!-- when ejs convert to html at view engine than any file required after fill ejs code(path define) that get from MW  that create at main js file, that give file present in particular Path(/upload/avatar-3454) that define at ejs code ,give to view engine and than view engine bundle sen as response to controller than to browser
+        // when view engine required file at particular path than that MW called
+        -->
         <!-- an update form/router -->
         <form action="/user/update/<%= profile_user.id%>" enctype="multipart/form-data" method="post">
             <input type="text" name="name" placeholder="Enter your name" value="<%=profile_user.name%>" required>
