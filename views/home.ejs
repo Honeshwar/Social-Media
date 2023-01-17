@@ -89,3 +89,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js" integrity="sha512-YeeA/Qxn5hYdkukScTCNNOhTrv1C2RubAGButJ1rmgQwZf/HdRaCGl+JAVkqsqaNRaYNHdheiuKKuPf9mDcqKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- here use script because in layout  not need ,at sign in time no need ,only when user login and it for chatting -->
 <script src="./js/chat_engine.js"></script>
+
+<% if(locals.user){%>
+    <script>
+        new ChatEngine('chat-box','<%=locals.user.email%>');
+    </script>
+<%}%>
