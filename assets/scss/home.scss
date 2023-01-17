@@ -4,31 +4,100 @@
     display:flex;
     justify-content:space-between;
 
-    #welcome{
-        width:30%;
-        // padding:10px;
-          border:1px solid rgb(14, 11, 11);
-    }
-    #feed-posts{
-        width:58%;
-        padding:10px;
-        border:1px solid rgb(14, 11, 11);
-        fieldset{
-            width:70%;
-        } 
-      
-        // border-left:1px solid lightgray;
-    }
-
     #friends-and-users{
         border:1px solid rgb(14, 11, 11);
-        width:30%;
+        width:20%;
         height:100%;
         padding:10px;//so it stay some far away from border
         // border:1px solid lightgray;
 
         display:flex;
         flex-direction: column;
+        /* align-items: center; */
+        justify-content: space-between;
+
+
+        #friends{
+            height: 50%;
+              h4{
+            //   text-align:center;
+              margin-bottom: 10px;
+              }
+        }
+        #users{
+            height: 50%;
+          h4{
+            // text-align:center;
+            margin-bottom: 10px;
+          }
+        }  
+        
        
     }
+  
+    #feed-posts {
+        width: 70%;
+        padding: 10px;
+        border-right: 1px solid lightgray; 
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+    
+         fieldset {
+             width: 70%; }
+    }         
+
+   
+   /* welcome section */
+    #welcome{
+      width:30%;
+      height:100%;
+      /* padding:10px; */
+      border-right:1px solid lightgray;
+      display:flex;
+      flex-direction: column;
+     /* justify-content: space-evenly; */
+      align-items: center;
+    
+        #welcome-note{
+        width:100%;
+        height:50%;
+        border: 1px dotted black;
+        
+        }
+        
+        #chat-box{
+        width:30%;
+        height:50%;
+        border: 1px dotted black;
+        display:flex;
+        flex-direction: column;
+        justify-content: space-between;
+        /* position: fixed;
+        top:50%;
+        left: 0; */
+        background-color: aqua;
+        
+        
+            #chat-text  p:first-child{
+            background-color: rgb(155, 52, 52);
+            width: fit-content;
+            padding: 10px;
+            margin: 5px;
+            }
+            #chat-text  p:last-child{
+            background-color: rgb(4, 105, 126);
+            margin: 10px;
+            margin-left: 50px;
+            width: fit-content;
+            padding: 10px;
+            }
+            #chat-input-send{
+                display:flex;
+            }
+        }    
+
+    }  
+    
+    
 }

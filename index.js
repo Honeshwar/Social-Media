@@ -28,7 +28,7 @@
     //connect flash
     const flash = require('connect-flash');
     const Flash_MW = require('./config/flash-middleware');
-    app.use(express.static('./assets')); //relative path
+   
     app.use(nodeSassMW({
         src:'/assets/scss',
         dest: '/assets/css',
@@ -45,10 +45,18 @@
 //     sourceMap: true, // or an absolute or relative (to outFile) path
     
 //     }, function(err, result) { if(err)console.log('err',err);/*...*/ console.log(result)});
+
+
+
+//setup the chat server to be used with socket.io
+const chatServer = require('http').Server(app);//means http server is express server,say http to not create new server just use express server
+const chatSockets = require('./config/chat_sockets').chatSockets(chatServer);
+chatServer.listen(5000);
+console.log("chat server is running on port 5000");
     
     //layout
     const expressLayouts = require('express-ejs-layouts');
-
+    app.use(express.static('./assets')); //relative path
     
     const path = require('path');
     // app.use('./assets',express.static(path.join(__dirname, 'assets')));

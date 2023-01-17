@@ -1,13 +1,48 @@
 <link rel="stylesheet" href="./css/home.css">
 <!-- div use to make a flex container and align section properly -->
 <div id="home-container">
-    <section id="welcome">
-       <div id="welcome-note">
-         <h4>Welcome to code social</h4>
-       </div>
-       <%- include('_chatbox.ejs')%>
 
-    </section>
+    <section id="friends-and-users">
+        <div id="friends">
+         <h4>Friends</h4>
+         <ul>
+             <%  for(fr of user_friends.friends){%>
+                 <!--collection(array) inside an single array ,   find() use collection(array ) return inside it all data that we need
+                 [ //inside single obj=current user,that why [0]
+                     { 
+                         name:'hon',
+                         friends:[{},{}]
+                     } 
+                 ]
+             -->
+             <!-- or
+             findOne an Obj so no need to do [0]
+              { 
+                 name:'hon',
+                 friends:[{},{}]
+              } 
+          -->
+ 
+                 <li>
+                     <a href="/user/profile/<%=fr.to_user.id%>"><%=fr.to_user.name%></a>
+                 </li>
+             <%}%>
+         </ul>
+        </div>
+        <div id="users">
+         <h4>Users</h4>
+         <ul>
+             <%  for(let user of all_users){%>
+                 <li>
+                     <a href="/user/profile/<%=user.id%>"><%=user.name%></a>
+                 </li>
+             <%}%>
+         </ul>
+        </div>
+        
+        
+     </section>
+
     <section id="feed-posts">
         <!-- <h1>CODE SOCIAL /<%= title%></h1> -->
         <!-- <hr> -->
@@ -17,7 +52,7 @@
         <% if(locals.user){%>
             <form action="/post/create" id="creating-new-post" method="post">
                 <!-- <legend>*** POST ***</legend> -->
-                <textarea name="content"  id="3" cols="30" rows="10" placeholder="Enter your content" required style="resize:vertical">  </textarea>
+                <textarea name="content"  id="3" cols="25" rows="10" placeholder="Enter your content" required style="resize:vertical">  </textarea>
                 <button type="submit">Post</button>
             </form>
         <%}%>
@@ -36,46 +71,13 @@
         </div>
     </section>
     
-    <section id="friends-and-users">
-       <div id="friends">
-        <h4>Friends</h4>
-        <ul>
-            <%  for(fr of user_friends.friends){%>
-                <!--collection(array) inside an single array ,   find() use collection(array ) return inside it all data that we need
-                [ //inside single obj=current user,that why [0]
-                    { 
-                        name:'hon',
-                        friends:[{},{}]
-                    } 
-                ]
-            -->
-            <!-- or
-            findOne an Obj so no need to do [0]
-             { 
-                name:'hon',
-                friends:[{},{}]
-             } 
-         -->
-
-                <li>
-                    <a href="/user/profile/<%=fr.to_user.id%>"><%=fr.to_user.name%></a>
-                </li>
-            <%}%>
-        </ul>
-       </div>
-       <div id="users">
-        <h4>Users</h4>
-        <ul>
-            <%  for(let user of all_users){%>
-                <li>
-                    <a href="/user/profile/<%=user.id%>"><%=user.name%></a>
-                </li>
-            <%}%>
-        </ul>
-       </div>
-       
-       
-    </section>
+    <section id="welcome">
+        <div id="welcome-note">
+          <h4>Welcome to code social</h4>
+        </div>
+        <%- include('_chatbox.ejs')%>
+ 
+     </section>
 </div>
 
 
@@ -83,3 +85,7 @@
 <!-- <script src="./js/home_post_comments.js"></script>
 <script src="./js/notification"></script>
 <script src="./js/likes.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js" integrity="sha512-YeeA/Qxn5hYdkukScTCNNOhTrv1C2RubAGButJ1rmgQwZf/HdRaCGl+JAVkqsqaNRaYNHdheiuKKuPf9mDcqKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- here use script because in layout  not need ,at sign in time no need ,only when user login and it for chatting -->
+<script src="./js/chat_engine.js"></script>

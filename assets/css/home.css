@@ -1,15 +1,20 @@
 /*  home */
 #home-container {
-  width:100vw;
-  height:100vh;
+  width:100%;
+  height:100%;
+  box-sizing: border-box;
   display: flex;
-  justify-content: space-between; }
+  justify-content: space-between; 
+ 
+  
+
+}
 /* welcome section */
 #welcome{
   width:30%;
   height:100%;
-  /* padding:10px; */
-  border-right:1px solid lightgray;
+  padding:10px;
+  box-sizing: border-box;
   display:flex;
   flex-direction: column;
 /* justify-content: space-evenly; */
@@ -18,32 +23,66 @@
 #welcome-note{
   width:100%;
   height:50%;
-  border: 1px dotted black;
+  /* border: 1px dotted black; */
   
 }
 
 #chat-box{
-  width:30%;
+  width: 30%;
   height:50%;
   border: 1px dotted black;
   display:flex;
   flex-direction: column;
-justify-content: space-between;
-position: fixed;
-top:50%;
-left: 0;
-background-color: aqua;
+  justify-content: space-between;
+  position: fixed;
+  top: 50%;
+right: 0;
+background-color: rgb(145, 151, 151);
   
 }
+.other-message{
+ background-color: rgb(155, 52, 52);
+ width: fit-content;
+ padding: 1px;
+ margin-top: 5px;
+ margin-left: -30px;
+ list-style: none;
+}
+.self-message{
+  background-color: rgb(4, 105, 126);
+  margin: 10px;
+  margin-left: 30px;
+  width: fit-content;
+  padding: 1px;
+  list-style: none;
+ }
+
+ #chat-input-container{
+    margin-bottom: 10px;
+    display: flex;
+    padding: 5px;
+    padding-right: 25px;
+    justify-content: space-evenly;
+ }
+ #chat-input-container input:first-child{
+    width: 60%;
+    
+ }
+ #chat-input-container input:last-child{
+    width: 30%;
+    
+ }
+
+
 /* feed posts section */
   #feed-posts {
-    width: 70%;
+    width: 50%;
     padding: 10px;
     border-right: 1px solid lightgray; 
     display:flex;
     flex-direction: column;
     align-items: center;
-
+    /* flex-grow: 0; */
   
   }
 
@@ -53,24 +92,26 @@ background-color: aqua;
 
 /* friends and users section */
   #friends-and-users{
-    width: 30%;
+    width: 20%;
     padding: 10px;
     height: 100%; 
     display:flex;
     flex-direction: column;
     /* align-items: center; */
     justify-content: space-between;
+    border-right:1px solid lightgray;
   }
   #friends{
     height: 50%;
+    /* padding-right: 20px; */
   }#friends h4{
-   text-align:center;
+   /* text-align:center; */
     margin-bottom: 10px;
   }
   #users{
     height: 50%;
   }#users h4{
-    text-align:center;
+    /* text-align:center; */
     margin-bottom: 10px;
   }
 

@@ -7,7 +7,9 @@ nav {
   justify-content: space-between;
   align-items: center;
   color: white;
-  height: 50px; }
+  height: 50px; 
+  padding-right: 10px;
+}
   nav h2 {
     margin-left: 5px; }
   nav #page-links {
