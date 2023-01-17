@@ -38,7 +38,8 @@ router.get('/auth/google',passport.authenticate('google',{scope:['profile','emai
 router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'user/signIn'}),userController.create_session);//get data go to home url
 //don't forget to use that auth on main .jd file to load it 
 
-
+// /user/profile/addFriend
+router.use('/profile',require('./profile'))
 
 
 module.exports = router; 

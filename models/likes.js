@@ -10,15 +10,17 @@ const likeSchema  = new mongoose.Schema({
     },
     //this defines the object id of liked object
     likeable:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,//when type define an obj we have to give ref of model with it,but i don't know the ref yet,so use dynamic reference , ref path to another field that tell us ref
         required:true,
         refPath:'onModel'//refPath say another field tell about reference, tell in which type(posts,comments) like is been happen
         //dynamic reference ,it refer to another field that dynamically refer to two model (posts,comments)
+   
+     // error when populate in likeable i think (due to naming Posts model name,type=post in onModel)
     },
     onModel:{
         type:String,// store type = post/comment
         required:true,
-        enum:['post','comment']// not use this that all model  dynamic refer//but chose among two
+        enum:['post','comment']// not use this that all model  dynamic refer//but choose among two
     }
 },{timestamps:true});//create at and update at date/time 
 

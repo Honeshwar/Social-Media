@@ -3,7 +3,7 @@
   const  path = require('path');
 
   // const  reset_password = require('../models/reset_password');
-const User = require("../models/users");
+
   // const cookieParser = require("cookie-parser");
   //an action create of an router
 
@@ -36,14 +36,15 @@ const User = require("../models/users");
 
   //get reqs
   
-  module.exports.profile = function(req,res){
-    Users.findById(req.params.id,function(err,user){
-
+  module.exports.profile = async function(req,res){
+   let user = await Users.findById(req.params.id);
+   let currentUser = await Users.findById(req.user.id).populate('friends');// populate in array friends
       return res.render("user_profile",{
         title:"Profile",
-        profile_user:user 
+        profile_user:user ,
+        currentUser:currentUser
       });
-    })
+    
   }
 
   //update

@@ -141,7 +141,7 @@
             
             let size = commentForm.length;
             console.log(size);     
-            for(let i=0;i<size;i++){
+            for(let i=0;i<size;i++){ // can use for each func in array eg. abc.each(fun(elem){});//iterate each element once
                 commentForm[i].addEventListener('submit',function(e){// create listener to all form
                             e.preventDefault();   
             
@@ -318,4 +318,6 @@
         }
         createLike();
     
+   
+
 }

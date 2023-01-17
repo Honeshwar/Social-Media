@@ -28,7 +28,7 @@
     //connect flash
     const flash = require('connect-flash');
     const Flash_MW = require('./config/flash-middleware');
- 
+    app.use(express.static('./assets')); //relative path
     app.use(nodeSassMW({
         src:'/assets/scss',
         dest: '/assets/css',
@@ -49,7 +49,7 @@
     //layout
     const expressLayouts = require('express-ejs-layouts');
 
-    app.use(express.static('./assets')); //relative path
+    
     const path = require('path');
     // app.use('./assets',express.static(path.join(__dirname, 'assets')));
 

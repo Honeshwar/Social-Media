@@ -3,10 +3,11 @@ const Likes = require('../models/likes');
 const Posts = require('../models/posts');
 const Comments = require('../models/comments');
 
-//if like already exist than remove it and if not exist that crate new like
+//if like already exist than remove it and if not exist that crate new like(use in FE also output,extra toggle func not create in FE script)
 module.exports.toggleLike = async function(req,res){//use async,await for good clean and understandable code and avoid call back hell
 
-    try {console.log(req.query.id);
+    try {
+        // console.log(req.query.id);
         // url likes/toggle/?id=dnjsk&type=post/comment
         // id= obj id of that liked object(post/comment) , type = string = comment/post
         let likeable;

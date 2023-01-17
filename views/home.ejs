@@ -35,14 +35,20 @@
     <section id="friends-and-users">
        <div id="friends">
         <h4>Friends</h4>
-       
+        <ul>
+            <%  for(fr of user_friends[0].friends){%>
+                <li>
+                    <a href="/user/profile/<%=fr.to_user.id%>"><%=fr.to_user.name%></a>
+                </li>
+            <%}%>
+        </ul>
        </div>
        <div id="users">
         <h4>Users</h4>
         <ul>
-            <%  for(u of all_users){%>
+            <%  for(let user of all_users){%>
                 <li>
-                    <a href="/user/profile/<%=u.id%>"><%=u.name%></a>
+                    <a href="/user/profile/<%=user.id%>"><%=user.name%></a>
                 </li>
             <%}%>
         </ul>

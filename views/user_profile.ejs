@@ -32,14 +32,54 @@
             <!-- <p>Password: <%= profile_user.password %></p>   -->
             <p>Created At: <i><%= profile_user.createdAt %></i> </p>  
             <p>Updated At: <%= profile_user.updatedAt %></p>
-        
+             <p>friends: <%=profile_user.friends[0] %></p>
         </div>
         <div id="add-friend">
-            <form action="/profile/addFriend" method="post">
-                <input type="hidden" name="friendID" value="<%=profile_user.id%>">
-                <button type="submit">Add To Friend</button>
+            <form action="user/profile/addFriend" method="post" id="add-to-friend">
+                <input type="hidden" name="friendID" value="<%=profile_user._id%>">
+                <% let is=false;
+                for(let el of currentUser.friends){
+                    if(el.to_user == profile_user.id){ %>
+                        <button type="submit" style="color: white; background-color: red;">Remove From Friend</button>
+
+                   
+                <% is=true; }} if(!is){ %>
+                <button type="submit" >Add To Friend</button>
+                <%} %>
             </form>
         </div>
 
     <%}%>    
     
+    <script >
+         /********* ADD TO FRIEND ************/
+ console.log('hi,********* ADD TO FRIEND ***********')
+ let createFriendship = function(){
+
+   let friendshipForm = $('#add-to-friend');
+   friendshipForm.submit(function(e){
+    e.preventDefault();
+
+    $.ajax({
+        method:'POST',
+        url:"./addFriend",
+        data:friendshipForm.serialize(),//json convert
+        success:function(res){
+            if(!res.data.addToFriend){
+                $('#add-to-friend button').html("Remove From Friend");
+                $('#add-to-friend button').css("background-color","red");
+                $('#add-to-friend button').css("color","white")
+            }else{
+                $('#add-to-friend button').text("Add To Friend");
+                $('#add-to-friend button').css("background-color","lightgray")
+                $('#add-to-friend button').css("color","black")
+            }
+        },error:function(resError){
+
+        }
+    })
+   })
+ }
+
+ createFriendship();
+    </script>

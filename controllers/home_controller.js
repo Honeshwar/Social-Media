@@ -103,12 +103,20 @@ try {
 
 
     const users = await Users.find({});
+    const user_friends = await Users.find(req.user._id).populate({//find always return an array
+        path:'friends',//field
+        populate:{ //nested populate
+            path:'to_user' //inside array an comment obj field(content,""user"",post)
+        }
+     });
+    //  console.log('user friends ',user_friends[0].friends[0]);
     
     //output send to browser
     return res.render('home',{
         title:"Home",
         posts:posts ,
-        all_users:users
+        all_users:users,
+        user_friends:user_friends
     });
 
 } catch (error) {
