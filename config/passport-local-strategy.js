@@ -38,7 +38,7 @@ passport.use(new LocalStrategy(
 //create session cookie
 // strategy of google use by passport and when at google strategy done(null,user)  req.user and passport do serialize user when it get use
 passport.serializeUser(function(user,done){
-    console.log("user  at serializer",user);
+    // console.log("user  at serializer",user);
    return  done(null,user.id);// value for cookie in done arg.
     //  return done
 });

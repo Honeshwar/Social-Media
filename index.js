@@ -49,9 +49,9 @@
 
 
 //setup the chat server to be used with socket.io
-const chatServer = require('http').Server(app);//means http server is express server,say http to not create new server just use express server
+const chatServer = require('http').Server(app);//means http server is express server,say http to not create new server just use express server code ,already server code written above we use it and listen in different port
 const chatSockets = require('./config/chat_sockets').chatSockets(chatServer);
-chatServer.listen(5000);
+chatServer.listen(5000);//port set in  which chatServer get listen
 console.log("chat server is running on port 5000");
     
     //layout
