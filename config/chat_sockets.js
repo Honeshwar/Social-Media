@@ -30,6 +30,14 @@ exports.chatSockets = function(socketServer){// socketServer
             //send  req to FE to notify all that new user is join a chat room, as notification to all user in chat room and also current join user(part of chat room),that some on is joined
             io.in(data.chatroom).emit('user_joined',data);//all  user in array sent notification that new user is join a chat room
         });
+
+
+            //receive an req and detect an event pass in req and if found fun pass an data (obj)
+        socket.on('send_message',function(data){
+            io.in(data.chatroom).emit('receive_message',data);//send req to all user in chat room ,any one who listen req event get will receive dat sended
+            //io.in(data.chatroom)= array one by one all user send req of an event as receive message and data
+
+        });
     
     });//all things inside connection because we want  connect established to do all things that done after connection
 

@@ -121,7 +121,9 @@
 
   module.exports.signIn = function(req,res){
     // if user login  ==true return to profile
+    console.log(req.isAuthenticated());
     if(req.isAuthenticated()){
+
       // return res.redirect('/user/profile');
       return res.redirect('/');
     }
