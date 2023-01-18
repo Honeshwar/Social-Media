@@ -6,14 +6,14 @@ const jwtExtract = require('passport-jwt').ExtractJwt;//an obj inside it many fu
 //help to extract jwt (token) from header(client req)
 
 const User = require('../models/users');
-
+const env = require('./env');
 
 //head part thing from user req(client)
 let opts = {
     // /user web token
     jwtFromRequest : jwtExtract.fromAuthHeaderAsBearerToken(),//it extract token from header from authorization(key)  an value bearer token
     //it extract from header having a lot of key it find for a bearer as key = jwt token and extract it                   
-    secretOrKey: 'hi' // like 123=abc, token = hi , use for decrypt(unlock)
+    secretOrKey:env.jwt_secret  // like 123=abc, token = hi , use for decrypt(unlock)
 };
 
 //tell passport to use jwt strategy

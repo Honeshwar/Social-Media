@@ -1,7 +1,9 @@
     const express = require('express');
     const app = express();
     const port = 8000;
-    
+    //environment variables(two variable production and development)
+    const env = require('./config/env');
+
     //database 
     const db = require("./config/mongoose");
         
@@ -29,9 +31,18 @@
     const flash = require('connect-flash');
     const Flash_MW = require('./config/flash-middleware');
    
+    //setup the chat server to be used with socket.io
+    const chatServer = require('http').Server(app);//means http server is express server,say http to not create new server just use express server code ,already server code written above we use it and listen in different port
+    const chatSockets = require('./config/chat_sockets').chatSockets(chatServer);
+    chatServer.listen(5000);//port set in  which chatServer get listen
+    console.log("chat server is running on port 5000");
+
+
+    const path = require('path');
+
     app.use(nodeSassMW({
-        src:'/assets/scss',
-        dest: '/assets/css',
+        src:path.join(__dirname,env.assets_path,'/scss'),
+        dest: path.join(__dirname,env.assets_path,'/css'),
         debug:'true',
         outputStyle:'extends',
         prefix:'/css'
@@ -45,20 +56,12 @@
 //     sourceMap: true, // or an absolute or relative (to outFile) path
     
 //     }, function(err, result) { if(err)console.log('err',err);/*...*/ console.log(result)});
-
-
-
-//setup the chat server to be used with socket.io
-const chatServer = require('http').Server(app);//means http server is express server,say http to not create new server just use express server code ,already server code written above we use it and listen in different port
-const chatSockets = require('./config/chat_sockets').chatSockets(chatServer);
-chatServer.listen(5000);//port set in  which chatServer get listen
-console.log("chat server is running on port 5000");
     
     //layout
     const expressLayouts = require('express-ejs-layouts');
-    app.use(express.static('./assets')); //relative path
+    app.use(express.static()); //relative path
     
-    const path = require('path');
+   
     // app.use('./assets',express.static(path.join(__dirname, 'assets')));
 
     //make the uploads path available to the browser
@@ -80,7 +83,7 @@ console.log("chat server is running on port 5000");
     app.use(session({
         name:"user_token",
         // TODO change the secret before deployment in production mode
-        secret:'ko',
+        secret:env.session_secret,
         saveUninitialized:false,
         resave:false, 
         cookie:{// max cookie session time

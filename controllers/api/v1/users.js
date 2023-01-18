@@ -1,6 +1,6 @@
 const User = require('../../../models/users');
 const jwtTOken = require('jsonwebtoken');
-
+const env = require('../../../config/env');
 module.exports.createSession = async function(req,res){
   
     try {
@@ -16,7 +16,7 @@ module.exports.createSession = async function(req,res){
             return res.status(200).json({
                 message:"sign in successfully ,here is your token please keep it safe",
                 data:{
-                    token:jwtTOken.sign(user.toJSON(),"hi",{expiresIn:"1000000000"})// jwt payload user as json obj, we don't save token at db(mo need to active all time like ligin)
+                    token:jwtTOken.sign(user.toJSON(),env.jwt_secret,{expiresIn:"1000000000"})// jwt payload user as json obj, we don't save token at db(mo need to active all time like ligin)
                     //(head(Payload),secretkey,expireTime)
                 }
             });

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
-mongoose.connect("mongodb://127.0.0.1:27017/CODE_SOCIAL_DEVELOPMENT");//mongodb://127.0.0.1/CODE_SOCIAL_DEVELOPMENT
+const env = require('./env');
+mongoose.connect(`mongodb://127.0.0.1:27017/${env.db}`);//mongodb://127.0.0.1/CODE_SOCIAL_DEVELOPMENT
 
 const db = mongoose.connection;
 

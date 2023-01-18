@@ -4,15 +4,15 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;//this library use because it contain both oauth and oauth2 Strategy
 const crypto = require('crypto');//in build library in nodejs,no need to install(deprecated)
 const User = require('../models/users');
-const { Strategy } = require('passport-local');
- 
+
+ const env = require('./env');
  
 //tell passport to use google oauth strategy
 passport.use(new GoogleStrategy({
     // MATCH with google send data to browser
-    clientID:"850782517174-40ebe3hmcpkcgb1d7komn7hfo67ho2r4.apps.googleusercontent.com",
-    clientSecret:"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",
-    callbackURL:"http://localhost:8000/user/auth/google/callback"
+    clientID:env.google_client_id,
+    clientSecret:env.google_client_secret,
+    callbackURL:env.google_call_back_url
     },function(accessToken,refreshToken,profile,done){
         //find user
         User.findOne({email:profile.emails[0].value},function(err,user){
